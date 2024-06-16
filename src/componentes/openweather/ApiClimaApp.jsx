@@ -6,9 +6,12 @@ export const ApiClimaApp = () => {
 
   const [clima, setClima] = useState(null);
   const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState(null);
 
   const getClima = async (city) => {
     setCargando(true);
+    setError(null);
+
     try {
       const ApiKey = 'f0a81ca80e562eb116c7db8b1c8fb315';
       const getApiClima = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${ApiKey}&units=metric$lang=es`;
@@ -17,7 +20,9 @@ export const ApiClimaApp = () => {
       setClima(resp.data);
 
     } catch (error) {
-      console.error('Error al obtener el clima', error);
+      setClima('');
+      console.error('Error al obtener la ciudad', error);
+      setError(`No se encontro el clima de "${city}"`)
 
     } finally{
       setCargando(false);
@@ -33,6 +38,7 @@ export const ApiClimaApp = () => {
     <div>
       <CityForm onFormSubmit={envForm}/>
       {cargando && <p>Cargando...</p> }
+      {error && <p>{error}</p>}
       {clima && (
         <div>
           <h2>Clima en {clima.name}</h2>
