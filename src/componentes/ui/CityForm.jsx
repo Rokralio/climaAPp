@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const CityForm = () => {
+export const CityForm = ({onFormSubmit}) => {
 const [city, setCity] = useState('');
 const [formSubmitted, setFormSubmitted] = useState(false);
 
@@ -10,6 +10,7 @@ const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    onFormSubmit(city);
     setFormSubmitted(true);
   }
   return (
