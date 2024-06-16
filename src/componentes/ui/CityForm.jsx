@@ -11,6 +11,7 @@ const [formSubmitted, setFormSubmitted] = useState(false);
   const handleSubmit = (event) => {
     event.preventDefault();
     onFormSubmit(city);
+    setCity('')
     setFormSubmitted(true);
   }
   return (
