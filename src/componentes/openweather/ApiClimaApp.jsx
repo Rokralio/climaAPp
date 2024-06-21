@@ -13,9 +13,9 @@ export const ApiClimaApp = () => {
     setError(null);
 
     try {
-      const ApiKey = process.env.API_KEY;
+      const apiKey = import.meta.env.VITE_API_KEY;
       //endpoint
-      const getApiClima = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${ApiKey}&units=metric&lang=es`;
+      const getApiClima = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
       const resp = await axios.get(getApiClima);
 
       setClima(resp.data);

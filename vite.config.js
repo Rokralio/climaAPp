@@ -11,7 +11,7 @@ const baseUrl = process.env.BASE_URL || '/Web-Clima/'
 export default defineConfig({
   plugins: [react()],
   base: baseUrl,
-    define: {
-    'process.env': process.env
+  define: {
+  'import.meta.env': import.meta.env,
   }
 })
