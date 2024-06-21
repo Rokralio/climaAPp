@@ -5,19 +5,18 @@ Este proyecto de React creato con Vite para obtener el clima de una ciudad.
 ## Dependencias
 - Dependencias extras que usamos
 Axios para manerar la Api con la version = ^1.7.2"
-Bootstrap para el stilo de la pagina con la version = ^5.3.3"
+Bootstrap para el estilo de la pagina con la version = ^5.3.3"
 gh-pages para poder desplegarlo directamente en github con la version = ^6.1.1
 
 ## API
-- Se utilizo la api de [OpenWeather]
-(https://home.openweathermap.org/)
+- Api utilizada [OpenWeather](https://home.openweathermap.org/)
 
 ## Comandos
 
 ### github:
 [github](https://github.com/Rokralio/Web-Clima)
 clonar repositorio:
--git clone https://github.com/Rokralio/Web-Clima.git
+- git clone https://github.com/Rokralio/Web-Clima.git
 
 - yarn = para instalar las dependencias del proyecto
 

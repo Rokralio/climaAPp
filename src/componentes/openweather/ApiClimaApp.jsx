@@ -13,7 +13,8 @@ export const ApiClimaApp = () => {
     setError(null);
 
     try {
-      const ApiKey = 'f0a81ca80e562eb116c7db8b1c8fb315';
+      const ApiKey = process.env.API_KEY;
+      //endpoint
       const getApiClima = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${ApiKey}&units=metric&lang=es`;
       const resp = await axios.get(getApiClima);
 
@@ -24,7 +25,7 @@ export const ApiClimaApp = () => {
       console.error('Error al obtener la ciudad', error);
       setError(`No se encontró el clima de "${city}"`);
 
-    } finally{
+    } finally {
       setCargando(false);
     }
   }
@@ -43,14 +44,11 @@ export const ApiClimaApp = () => {
             <h2 className='text-center'>Clima en {clima.name}</h2>
             <p>Pais: {clima.sys.country}</p>
             <p>Temperatura: {clima.main.temp} °C</p>
-            <p>Sensación térmica: {clima.main.feels_like}</p>
-            <p>Temperatura mínima: {clima.main.temp_min}</p>
-            <p>Temperatura máxima: {clima.main.temp_max}</p>
+            <p>Sensación térmica: {clima.main.feels_like} °C</p>
+            <p>Temperatura mínima: {clima.main.temp_min} °C</p>
+            <p>Temperatura máxima: {clima.main.temp_max} °C</p>
           </div>
         )}
       </div>
   );
 };
-
-
-
