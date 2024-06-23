@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { CityForm } from '../ui/CityForm';
+import { ApiCountries } from '../Api/restcountries/ApiCountries';
 
 export const ApiClimaApp = () => {
 
@@ -42,7 +43,7 @@ export const ApiClimaApp = () => {
         {clima && (
           <div className='border border-2 rounded-1 border-info px-3 mt-1'>
             <h2 className='text-center'>Clima en {clima.name}</h2>
-            <p>Pais: {clima.sys.country}</p>
+            <ApiCountries countryCode={clima.sys.country} />
             <p>Temperatura: {clima.main.temp} °C</p>
             <p>Sensación térmica: {clima.main.feels_like} °C</p>
             <p>Temperatura mínima: {clima.main.temp_min} °C</p>

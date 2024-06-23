@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from 'prop-types';
 
 export const CityForm = ({onFormSubmit}) => {
   const [city, setCity] = useState('');
@@ -33,4 +34,8 @@ export const CityForm = ({onFormSubmit}) => {
       </form>
     </div>
   );
+};
+
+CityForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
 };
