@@ -1,3 +1,9 @@
 node_modules
 dist
 .git
+
+#test
+test
+jest.config.cjs
+jest.setup.js
+babel.config.cjs

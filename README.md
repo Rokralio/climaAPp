@@ -39,5 +39,5 @@ Este proyecto de React creato con Vite para obtener el clima de una ciudad.
 
 ## Link de la App desplegada
 
-[climaapp](https://rokralio.github.io/Web-Clima/)
+[climaapp](https://rokralio.github.io/climaapp/)
 
