@@ -1,10 +1,12 @@
-import { ApiClimaApp } from "./componentes/openweather/ApiClimaApp";
+import { ApiClimaApp } from "./componentes/Api/openweather/ApiClimaApp";
 
 function App() {
   return (
     <>
-      <div className="text-white d-flex justify-content-center m-5">
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div >
           <ApiClimaApp/>
+        </div>
       </div>
     </>
   );

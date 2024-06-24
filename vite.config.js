@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 // Cargar variables de entorno
 dotenv.config();
 
-const baseUrl = process.env.BASE_URL || '/Web-Clima/'
+const baseUrl = process.env.BASE_URL || '/climaapp/'
 
 // https://vitejs.dev/config/
 export default defineConfig({
