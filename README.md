@@ -1,6 +1,7 @@
 # CLIMA APP
 
 Este proyecto de React creato con Vite para obtener el clima de una ciudad.
+
 ## Dependencias
 
 | Dependencia | Versión |
