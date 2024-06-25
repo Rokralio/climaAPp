@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { CityForm } from '../../ui/CityForm';
 import { ApiCountries } from '../restcountries/ApiCountries';
@@ -8,7 +9,7 @@ const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-export const ApiClimaApp = () => {
+export const ApiClimaApp = ({ setDescripcionClima }) => {
   const [clima, setClima] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
@@ -23,10 +24,11 @@ export const ApiClimaApp = () => {
       const getApiClima = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=es`;
       const resp = await axios.get(getApiClima);
       setClima(resp.data);
+      setDescripcionClima(capitalizeFirstLetter(resp.data.weather?.[0]?.description || ''));
     } catch (error) {
       console.error('Error al obtener la ciudad', error);
       setError(`No se encontró el clima de "${city}"`);
-      setClima('')
+      setClima('');
     } finally {
       setCargando(false);
     }
@@ -46,8 +48,7 @@ export const ApiClimaApp = () => {
       {cargando && <p>Cargando...</p>}
       {error && <p className="h5 rounded-1 text-center text-danger bg-light mt-3">{error}</p>}
       {clima && (
-        <div  className=' p-2 px-3 mt-1'
-        style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
+        <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
           <h2 className='text-center'>Clima en {clima.name}</h2>
           <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
           <ApiCountries countryCode={clima.sys.country} />
@@ -69,3 +70,7 @@ export const ApiClimaApp = () => {
     </div>
   );
 };
+
+ApiClimaApp.propTypes = {
+  setDescripcionClima: PropTypes.func.isRequired,
+}
