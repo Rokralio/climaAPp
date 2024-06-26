@@ -1,21 +1,24 @@
-import PropTypes from 'prop-types';
-import cielo from '../../assets/cielo.jpg';
-import lluvia from '../../assets/lluvia.jpg';
-import nublado from '../../assets/nublado.jpg';
-import tormenta from '../../assets/tormenta.jpg';
-import niebla from '../../assets/neblina.jpg';
-import nieve from '../../assets/nevando.jpg';
+import PropTypes from "prop-types";
+import cielo from "../../assets/cielo.jpg";
+import lluvia from "../../assets/lluvia.jpg";
+import nublado from "../../assets/nublado.jpg";
+import tormenta from "../../assets/tormenta.jpg";
+import niebla from "../../assets/neblina.jpg";
+import nieve from "../../assets/nevando.jpg";
+import predeterminado from "../../assets/cielo_despejado.jpg";
 
 export const GetClimaFondo = ({ descripcionClima }) => {
 
   const tiposDeClima = (descripcion) => {
-    const lowerCaseDescripcion = descripcion.toLowerCase();
+    const lowerCaseDescripcion = descripcion.toLowerCase().trim();
 
     if (lowerCaseDescripcion.includes('cielo despejado') ||
         lowerCaseDescripcion.includes('pocas nubes') ||
         lowerCaseDescripcion.includes('nubes dispersas') ||
         lowerCaseDescripcion.includes('muy nuboso') ||
-        lowerCaseDescripcion.includes('nubes rotas')) {
+        lowerCaseDescripcion.includes('lluvia de gran intensidad') ||
+        lowerCaseDescripcion.includes('nubes rotas') ||
+        lowerCaseDescripcion.includes('cielo claro')) {
       return 'cielo';
     } else if (lowerCaseDescripcion.includes('lluvia') ||
               lowerCaseDescripcion.includes('lluvia ligera') ||
@@ -30,15 +33,15 @@ export const GetClimaFondo = ({ descripcionClima }) => {
               lowerCaseDescripcion.includes('niebla') ||
               lowerCaseDescripcion.includes('neblina') ||
               lowerCaseDescripcion.includes('humo')) {
-      return 'neblina';
+      return 'niebla';
     } else if (lowerCaseDescripcion.includes('nieve') ||
               lowerCaseDescripcion.includes('nieve ligera') ||
               lowerCaseDescripcion.includes('nieve moderada') ||
               lowerCaseDescripcion.includes('nieve intensa') ||
               lowerCaseDescripcion.includes('nevada')) {
-      return 'nevando';
+      return 'nieve';
     } else {
-      return;
+      return 'predeterminado';
     }
   };
 
@@ -51,9 +54,10 @@ export const GetClimaFondo = ({ descripcionClima }) => {
     'tormenta': tormenta,
     'niebla': niebla,
     'nieve': nieve,
+    'predeterminado': predeterminado,
   };
 
-  const imageName = imageMap[categoria];
+  const imageName = imageMap[categoria] || predeterminado;
 
   const fondoStyle = {
     backgroundImage: `url(${imageName})`,
