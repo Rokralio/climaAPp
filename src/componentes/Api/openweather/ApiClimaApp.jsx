@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import { CityForm } from '../../ui/CityForm';
-import { ApiCountries } from '../restcountries/ApiCountries';
-import { BtSwitch } from '../../ui/BtSwitch';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { CityForm } from "../../ui/CityForm";
+import { ApiCountries } from "../restcountries/ApiCountries";
+import { BtSwitch } from "../../ui/BtSwitch";
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -28,7 +28,7 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
     } catch (error) {
       console.error('Error al obtener la ciudad', error);
       setError(`No se encontró el clima de "${city}"`);
-      setClima('');
+      setClima(null);
     } finally {
       setCargando(false);
     }
@@ -44,19 +44,16 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
 
   return (
     <div>
-      <CityForm onFormSubmit={envForm} />
-      {cargando && (
-        <div className="d-flex justify-content-center align-items-center mt-3">
-          <div className='spinner-border text-light' role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+      <CityForm onFormSubmit={envForm} loading={cargando} />
+      {error && (
+        <p className='h5 text-center text-danger p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
+          {error}
+        </p>
       )}
-      {error && <p className='h5 text-center text-danger p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>{error}</p>}
       {clima && (
         <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
           <h2 className='text-center'>{clima.name}</h2>
-          <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
+          <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit}/>
           <ApiCountries countryCode={clima.sys.country} />
           <p>Tipo de clima: <span className='fw-bold'>{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</span></p>
           <div id='celsius' style={{ display: mostrarCelsius ? 'block' : 'none' }}>
@@ -79,4 +76,4 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
 
 ApiClimaApp.propTypes = {
   setDescripcionClima: PropTypes.func.isRequired,
-}
+};

@@ -5,7 +5,7 @@ export const BtSwitch = ({ mostrarCelsius, toggleTemperatureUnit }) => {
 
   return (
     <div>
-      <div className="custom-switch border rounded-3">
+      <div className="custom-switch border rounded-3 mb-3">
         <input
           className="custom-switch-input"
           type="checkbox"
