@@ -45,25 +45,31 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   return (
     <div>
       <CityForm onFormSubmit={envForm} />
-      {cargando && <p>Cargando...</p>}
-      {error && <p className="h5 rounded-1 text-center text-danger bg-light mt-3">{error}</p>}
+      {cargando && (
+        <div className="d-flex justify-content-center align-items-center mt-3">
+          <div className='spinner-border text-light' role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+      {error && <p className='h5 text-center text-danger p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>{error}</p>}
       {clima && (
         <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
-          <h2 className='text-center'>Clima en {clima.name}</h2>
+          <h2 className='text-center'>{clima.name}</h2>
           <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
           <ApiCountries countryCode={clima.sys.country} />
-          <p>Tipo de clima: {capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</p>
+          <p>Tipo de clima: <span className='fw-bold'>{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</span></p>
           <div id='celsius' style={{ display: mostrarCelsius ? 'block' : 'none' }}>
-            <p>Temperatura: {clima.main.temp} °C</p>
-            <p>Sensación térmica: {clima.main.feels_like} °C</p>
-            <p>Temperatura mínima: {clima.main.temp_min} °C</p>
-            <p>Temperatura máxima: {clima.main.temp_max} °C</p>
+            <p>Temperatura: <span className='fw-bold'>{clima.main.temp} °C</span></p>
+            <p>Sensación térmica: <span className='fw-bold'>{clima.main.feels_like} °C</span></p>
+            <p>Temperatura mínima: <span className='fw-bold'>{clima.main.temp_min} °C</span></p>
+            <p>Temperatura máxima: <span className='fw-bold'>{clima.main.temp_max} °C</span></p>
           </div>
           <div id='fahrenheit' style={{ display: mostrarCelsius ? 'none' : 'block' }}>
-            <p>Temperatura: {(clima.main.temp * 9/5 + 32).toFixed(2)} °F</p>
-            <p>Sensación térmica: {(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</p>
-            <p>Temperatura mínima: {(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</p>
-            <p>Temperatura máxima: {(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</p>
+            <p>Temperatura: <span className='fw-bold'>{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p>Sensación térmica: <span className='fw-bold'>{(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p>Temperatura mínima: <span className='fw-bold'>{(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p>Temperatura máxima: <span className='fw-bold'>{(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</span></p>
           </div>
         </div>
       )}

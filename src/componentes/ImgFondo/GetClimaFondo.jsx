@@ -26,8 +26,6 @@ export const GetClimaFondo = ({ descripcionClima }) => {
       return 'nublado';
     } else if (lowerCaseDescripcion.includes('tormenta')) {
       return 'tormenta';
-    // } else if (lowerCaseDescripcion.includes('ráfagas')) {
-    //   return 'rafagas';
     } else if (lowerCaseDescripcion.includes('niebla ligera') ||
               lowerCaseDescripcion.includes('niebla') ||
               lowerCaseDescripcion.includes('neblina') ||
@@ -40,7 +38,7 @@ export const GetClimaFondo = ({ descripcionClima }) => {
               lowerCaseDescripcion.includes('nevada')) {
       return 'nevando';
     } else {
-      return descripcion;
+      return;
     }
   };
 
@@ -51,7 +49,6 @@ export const GetClimaFondo = ({ descripcionClima }) => {
     'lluvia': lluvia,
     'nublado': nublado,
     'tormenta': tormenta,
-    // 'rafagas': rafagas,
     'niebla': niebla,
     'nieve': nieve,
   };
@@ -62,12 +59,12 @@ export const GetClimaFondo = ({ descripcionClima }) => {
     backgroundImage: `url(${imageName})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    width: '100vw',
-    height: '100vh',
-    position: 'fixed', // Para que ocupe todo el fondo
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
     top: 0,
     left: 0,
-    zIndex: -1, // Para que quede detrás de otros elementos
+    zIndex: -1,
   };
 
   return (

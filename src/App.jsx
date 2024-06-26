@@ -8,10 +8,8 @@ function App() {
   return (
     <>
       <GetClimaFondo descripcionClima={descripcionClima} />
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div>
+      <div className="container-fluid vh-100 d-flex justify-content-center align-items-center">
           <ApiClimaApp setDescripcionClima={setDescripcionClima} />
-        </div>
       </div>
     </>
   );

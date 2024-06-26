@@ -30,7 +30,7 @@ export const ApiCountries = ({ countryCode }) => {
 
   return (
     <div>
-      <p>Pais: {countryName}</p>
+      <p>Pais: <span className='fw-bold'>{countryName}</span></p>
     </div>
   );
 }
