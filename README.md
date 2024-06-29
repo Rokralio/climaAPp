@@ -21,8 +21,8 @@ Este proyecto de React creato con Vite para obtener el clima de una ciudad.
 
 ### Repositorios
 
-[github](https://github.com/Rokralio/Web-Clima)
-[docker](https://hub.docker.com/r/rokralio/mi-web-clima)
+[Github](https://github.com/Rokralio/Web-Clima)
+[Docker](https://hub.docker.com/r/rokralio/mi-web-clima)
 
 ### GIT
 | git                 | Descripción                                                   |
