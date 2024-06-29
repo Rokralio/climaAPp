@@ -15,28 +15,35 @@ export const CityForm = ({ onFormSubmit, loading }) => {
     setCity('');
   };
 
+  const handleFocus = (e) => {
+    e.target.style.outline = 'none';
+    e.target.style.boxShadow = '0 0 0 0px #ccc'; // Ajusta el borde en foco
+};
+
   return (
-    <div className="p-3 text-center" style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
+    <div className="p-3 text-center" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
       <h1>Bienvenido</h1>
       <form onSubmit={handleSubmit}>
         <div className="m-1">
-          <label htmlFor="city" className="m-2 fw-medium d-block">¿De qué ciudad quieres saber el clima?</label>
+          <label htmlFor="city" className="m-2 fw-medium d-block">¿Quieres saber el clima de?</label>
           <input
             id="city"
             type="text"
             value={city}
             onChange={handleCityChange}
-            placeholder="¿Ciudad?"
+            placeholder="Ingrese una ciudad"
             required
-            className="form-control text-center"
+            className="form-control rounded-0"
+            onFocus={handleFocus}
+            style={{cursor: 'pointer'}}
           />
         </div>
         <div className="m-1 d-flex justify-content-center">
           {!loading && (
-            <button type='submit' className="btn btn-sm fs-2 p-0 text-decoration-underline" style={{ minWidth: '100%', backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}>Enviar</button>
+            <button type='submit' className="btn btn-sm fs-2 p-0 fw-bold" style={{ minWidth: '100%', backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}>Enviar</button>
           )}
           {loading && (
-            <div className="spinner-border text-light" role="status">
+            <div className="spinner-border text-secondary" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           )}

@@ -1,35 +1,26 @@
-#root {
-  background-image: url('./assets/cielo_despejado.jpg');
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
+html, body {
   margin: 0;
-  padding-top: 5;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  padding: 0;
   height: 100%;
-  z-index: -1;
+  width: 100%;
 }
 
-header {
-  background-color: rgb(00, 100, 200,0.5);
-  color: white;
-  padding: 1rem;
+.cbz-header {
+  background-color: rgba(240, 240, 240, 1);
+  height: 8vh;
+  font-family: Arial, sans-serif;
+  z-index: 1;
 }
 
-h1 {
+.cbz {
+  font-weight: 700;
   margin: 0;
-  font-size: 2rem;
-  font-style: italic;
-  display: inline-block;
 }
 
-.cbz{
-  font-size: 4rem;
+.api-container {
+  flex-grow: 1;
 }
 
+.pS {
+  font-weight: bold;
+}

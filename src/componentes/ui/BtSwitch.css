@@ -1,7 +1,7 @@
 .custom-switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 65px;
   height: 34px;
 }
 
@@ -73,4 +73,8 @@
 /* Ocultar el texto °C cuando el switch muestra °F */
 .custom-switch-input:not(:checked) + .custom-switch-label:before {
   color: transparent;
+}
+
+.custom-switch-input:checked + .custom-switch-label {
+  background-color: rgba(125, 206, 235, 0.3);
 }

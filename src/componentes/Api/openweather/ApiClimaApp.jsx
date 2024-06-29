@@ -46,27 +46,49 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
     <div>
       <CityForm onFormSubmit={envForm} loading={cargando} />
       {error && (
-        <p className='h5 text-center text-danger p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
+        <p className='h5 text-center text-danger p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
           {error}
         </p>
       )}
       {clima && (
-        <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(208, 217, 225, 0.5)' }}>
-          <h2 className='text-center'>{clima.name}</h2>
-          <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit}/>
+        <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
+          <div className="d-flex justify-content-between align-items-center w-100">
+            <h2>{clima.name}</h2>
+            <div className="ms-auto">
+              <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
+            </div>
+          </div>
           <ApiCountries countryCode={clima.sys.country} />
-          <p>Tipo de clima: <span className='fw-bold'>{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</span></p>
+          <p className="d-flex justify-content-between">
+            <span className="pS">Tipo de clima:</span>
+            <span className="ms-2"> {capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</span></p>
           <div id='celsius' style={{ display: mostrarCelsius ? 'block' : 'none' }}>
-            <p>Temperatura: <span className='fw-bold'>{clima.main.temp} °C</span></p>
-            <p>Sensación térmica: <span className='fw-bold'>{clima.main.feels_like} °C</span></p>
-            <p>Temperatura mínima: <span className='fw-bold'>{clima.main.temp_min} °C</span></p>
-            <p>Temperatura máxima: <span className='fw-bold'>{clima.main.temp_max} °C</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Temperatura:</span>
+              <span className="ms-2"> {clima.main.temp} °C</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Sensación térmica:</span>
+              <span className="ms-2"> {clima.main.feels_like} °C</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Temperatura mínima:</span>
+              <span className="ms-2"> {clima.main.temp_min} °C</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Temperatura máxima:</span>
+              <span className="ms-2"> {clima.main.temp_max} °C</span></p>
           </div>
           <div id='fahrenheit' style={{ display: mostrarCelsius ? 'none' : 'block' }}>
-            <p>Temperatura: <span className='fw-bold'>{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</span></p>
-            <p>Sensación térmica: <span className='fw-bold'>{(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</span></p>
-            <p>Temperatura mínima: <span className='fw-bold'>{(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</span></p>
-            <p>Temperatura máxima: <span className='fw-bold'>{(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Temperatura:</span>
+              <span className="ms-2"> {(clima.main.temp * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Sensación térmica:</span>
+              <span className="ms-2"> {(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Temperatura mínima:</span>
+              <span className="ms-2"> {(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</span></p>
+            <p className="d-flex justify-content-between">
+              <span className="pS">Temperatura máxima:</span>
+              <span className="ms-2"> {(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</span></p>
           </div>
         </div>
       )}

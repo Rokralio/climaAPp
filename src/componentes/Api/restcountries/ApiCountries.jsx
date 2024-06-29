@@ -24,13 +24,18 @@ export const ApiCountries = ({ countryCode }) => {
   }, [countryCode]);
 
   return (
-    <div>
+    <>
       {countryName && (
-        <p>País: <span className='fw-bold'>{countryName}</span></p>
+        <p className="d-flex justify-content-between">
+          <span className="pS">País:</span>
+          <span className="ms-2">{countryName}</span>
+        </p>
       )}
-    </div>
+    </>
   );
 }
+
+
 
 ApiCountries.propTypes = {
   countryCode: PropTypes.string.isRequired,
