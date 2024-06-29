@@ -11,7 +11,7 @@ function App() {
         <h1 className="cbz">ClimaApp</h1>
       </header>
       <GetClimaFondo descripcionClima={descripcionClima} />
-      <div className="api-container d-flex justify-content-center align-items-center flex-grow-1 m-5" >
+      <div className="api-container d-flex justify-content-center align-items-center flex-grow-1 mx-auto p-3">
         <ApiClimaApp setDescripcionClima={setDescripcionClima} />
       </div>
     </div>
