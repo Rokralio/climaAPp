@@ -1,0 +1,40 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+.api-container {
+  flex-grow: 1;
+  position: relative;
+  z-index: 5;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.get-clima-fondo {
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .api-container {
+    max-width: 100%;
+    margin: 20px; 
+  }
+
+  .get-clima-fondo {
+    width: 100%;
+  }
+}
+
+.pS {
+  font-weight: bold;
+}
