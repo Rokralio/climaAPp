@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import images from "../../assets/images";
+import "./GetClimaFondo.css";
 
 export const GetClimaFondo = ({ descripcionClima }) => {
 
@@ -70,57 +71,13 @@ export const GetClimaFondo = ({ descripcionClima }) => {
 
   const imageName = imageMap[categoria] || images.predeterminado;
 
-  // const fondoStyle = {
-  //   backgroundImage: `url(${imageName})`,
-  //   backgroundSize: 'cover',
-  //   backgroundPosition: 'center',
-  //   width: '80%',
-  //   height: '100%',
-  //   position: 'absolute',
-  //   top: 0,
-  //   left: '10%',
-  //   right: '10%',
-  //   zIndex: -1,
-  // };
-
-  const fondoStyle = {
-    backgroundImage: `url(${imageName})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    // left: '10%',
-    // right: '10%',
-    zIndex: -1,
-  };
-
-  const sidePanelStyleLeft = {
-    backgroundColor: 'rgba(240, 240, 240, 1)',
-    width: '10%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    // zIndex: -1,
-  };
-
-  const sidePanelStyleRight = {
-    backgroundColor: 'rgba(240, 240, 240, 1)',
-    width: '10%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    // zIndex: -1,
-  };
+  const imgFondo = {
+    backgroundImage: `url(${imageName})`
+  }
 
   return (
     <>
-      <div style={sidePanelStyleLeft}></div>
-      <div style={fondoStyle}></div>
-      <div style={sidePanelStyleRight}></div>
+      <div className="stylFondo" style={imgFondo}></div>
     </>
   );
 };
