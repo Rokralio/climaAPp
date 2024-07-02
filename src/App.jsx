@@ -10,8 +10,8 @@ function App() {
     <div className="container-fluid vh-100 d-flex flex-column justify-content-center align-items-center">
       <div className="col-12 col-md-6 d-flex flex-column align-items-center">
         <GetClimaFondo descripcionClima={descripcionClima} />
-        <div className="api-container d-flex justify-content-center align-items-center flex-grow-1 w-100">
-          <ApiClimaApp setDescripcionClima={setDescripcionClima} />
+        <div className="api-container  justify-content-center align-items-center">
+          <ApiClimaApp className="appQueries" setDescripcionClima={setDescripcionClima} />
         </div>
       </div>
     </div>

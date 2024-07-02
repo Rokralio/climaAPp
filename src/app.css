@@ -13,7 +13,7 @@ html, body {
   flex-grow: 1;
   position: relative;
   z-index: 5;
-  max-width: 80%;
+  width: 70%;
   margin: 0 auto;
 }
 
@@ -35,6 +35,26 @@ html, body {
   }
 }
 
-.pS {
+.colTd {
   font-weight: bold;
+}
+
+.colData {
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .api-container {
+    width: 80%;
+    left: 0;
+    right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .api-container {
+    width: 70%;
+    left: 0;
+    right: 0;
+  }
 }
