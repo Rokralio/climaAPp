@@ -46,9 +46,12 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
     <div>
       <CityForm onFormSubmit={envForm} loading={cargando} />
       {error && (
-        <p className='h5 text-center text-danger p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
+        <p className="h5 text-center text-danger p-2 px-3 mt-1" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)', maxWidth: '100%', overflowWrap: 'break-word' }}>
           {error}
         </p>
+
+
+
       )}
       {clima && (
         <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
@@ -58,38 +61,57 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
               <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
             </div>
           </div>
-          <ApiCountries countryCode={clima.sys.country} />
-          <p className="d-flex justify-content-between">
-            <span className="pS">Tipo de clima:</span>
-            <span className="ms-2"> {capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</span></p>
-          <div id='celsius' style={{ display: mostrarCelsius ? 'block' : 'none' }}>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Temperatura:</span>
-              <span className="ms-2"> {clima.main.temp} °C</span></p>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Sensación térmica:</span>
-              <span className="ms-2"> {clima.main.feels_like} °C</span></p>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Temperatura mínima:</span>
-              <span className="ms-2"> {clima.main.temp_min} °C</span></p>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Temperatura máxima:</span>
-              <span className="ms-2"> {clima.main.temp_max} °C</span></p>
-          </div>
-          <div id='fahrenheit' style={{ display: mostrarCelsius ? 'none' : 'block' }}>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Temperatura:</span>
-              <span className="ms-2"> {(clima.main.temp * 9/5 + 32).toFixed(2)} °F</span></p>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Sensación térmica:</span>
-              <span className="ms-2"> {(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</span></p>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Temperatura mínima:</span>
-              <span className="ms-2"> {(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</span></p>
-            <p className="d-flex justify-content-between">
-              <span className="pS">Temperatura máxima:</span>
-              <span className="ms-2"> {(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</span></p>
-          </div>
+          <table className="table table-striped-columns">
+            <tbody>
+              <tr>
+              <td className="colTd">País:</td>
+                <ApiCountries countryCode={clima.sys.country} />
+              </tr>
+              <tr>
+                <td className="colTd">Tipo de clima:</td>
+                <td className="colData">{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</td>
+              </tr>
+              {mostrarCelsius ? (
+          <>
+            <tr>
+              <td className="colTd">Temperatura:</td>
+              <td className="colData">{clima.main.temp} °C</td>
+            </tr>
+            <tr>
+              <td className="colTd">Sensación térmica:</td>
+              <td className="colData">{clima.main.feels_like} °C</td>
+            </tr>
+            <tr>
+              <td className="colTd">Temperatura mínima:</td>
+              <td className="colData">{clima.main.temp_min} °C</td>
+            </tr>
+            <tr>
+              <td className="colTd">Temperatura máxima:</td>
+              <td className="colData">{clima.main.temp_max} °C</td>
+            </tr>
+          </>
+        ) : (
+          <>
+            <tr>
+              <td className="colTd">Temperatura:</td>
+              <td className="colData">{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</td>
+            </tr>
+            <tr>
+              <td className="colTd">Sensación térmica:</td>
+              <td className="colData">{(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</td>
+            </tr>
+            <tr>
+              <td className="colTd">Temperatura mínima:</td>
+              <td className="colData">{(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</td>
+            </tr>
+            <tr>
+              <td className="colTd">Temperatura máxima:</td>
+              <td className="colData">{(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</td>
+            </tr>
+          </>
+        )}
+            </tbody>
+        </table>
         </div>
       )}
     </div>

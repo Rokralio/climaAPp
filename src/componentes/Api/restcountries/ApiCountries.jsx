@@ -26,14 +26,13 @@ export const ApiCountries = ({ countryCode }) => {
   return (
     <>
       {countryName && (
-        <p className="d-flex justify-content-between">
-          <span className="pS">País:</span>
-          <span className="ms-2">{countryName}</span>
-        </p>
+            <td className="colData">{countryName}</td>
       )}
     </>
   );
 }
+
+
 
 
 
