@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import images from "../../assets/images";
+import images from "../../../assets/images";
 import "./GetClimaFondo.css";
 
 export const GetClimaFondo = ({ descripcionClima }) => {
