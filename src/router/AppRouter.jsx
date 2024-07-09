@@ -1,29 +1,28 @@
-import { Route, Routes } from 'react-router-dom';
-import { LoginPage, RegisterPage } from '../auth';
-import { ClimaRoute } from '../climaApp/routes/ClimaRoute';
-
-
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { ClimaRoute } from '../climaApp';
+import { AuthRoutes } from '../auth';
+import { CheckingAuth } from '../ui';
+import { useCheckAuth } from '../hooks';
 
 export const AppRouter = () => {
+
+const { status } = useCheckAuth();
+
+  if ( status === 'checking' ) {
+    return <CheckingAuth />;
+  }
+
   return (
     <>
       <Routes>
-        <Route path='climaapp/login' element={
+        
+        {
+          status === 'authenticated'
+          ? <Route path='/*' element={<ClimaRoute />} />
+          : <Route path='/*' element={<AuthRoutes />} />
+        }
 
-            <LoginPage />
-
-        } />
-
-        <Route path='climaapp/register' element={
-
-            <RegisterPage />
-
-        } />
-
-        <Route path='/*' element={
-
-            <ClimaRoute />
-        } />
+        <Route path='/*' element={ <Navigate to='climaapp/login'/> } />
       </Routes>
     </>
   )

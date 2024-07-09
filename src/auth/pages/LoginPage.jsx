@@ -1,19 +1,18 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import './loginPage.css';
+import { Link } from 'react-router-dom';
+import './styles.css';
 import { useForm } from '../../hooks';
-import { checkingAuthentication, startGoogleSignIn } from '../../store/auth';
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
 import { Grid, TextField, Button, Alert, Typography, Container } from '@mui/material';
 
 export const LoginPage = () => {
-  const navigate = useNavigate();
   const { status, errorMessage } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const { email, password, onInputChange } = useForm({
-    email: 'roberto@gmail.com',
-    password: '1234'
+    email: '',
+    password: ''
   });
 
   const isAuthenticated = useMemo(() => status === 'checking', [status]);
@@ -21,14 +20,10 @@ export const LoginPage = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     console.log({ email, password });
-    dispatch(checkingAuthentication());
-    navigate('climaapp/', {
-      replace: true,
-    });
+    dispatch( startLoginWithEmailPassword ({ email, password }) );
   };
 
   const onGoogleSignIn = () => {
-    console.log('onGoogleSignIn');
     dispatch(startGoogleSignIn());
   };
 
@@ -40,41 +35,32 @@ export const LoginPage = () => {
         </Typography>
         <form onSubmit={onSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+          <Grid item xs={12} className="mb-3">
               <TextField
-                variant="outlined"
-                required
-                fullWidth
+                type="email"
+                className="form-control"
                 id="email"
-                label="Email"
+                label="Correo"
+                placeholder="correo@gmail.com"
                 name="email"
-                autoComplete="email"
                 value={email}
                 onChange={onInputChange}
-                InputProps={{
-                  startAdornment: (
-                    <i className="bi bi-envelope" />
-                  ),
-                }}
+                fullWidth
+                variant="outlined"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className="mb-3">
               <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Contraseña"
                 type="password"
+                className="form-control"
                 id="password"
-                autoComplete="current-password"
+                label="Contraseña"
+                placeholder="Ingrese su contraseña"
+                name="password"
                 value={password}
                 onChange={onInputChange}
-                InputProps={{
-                  startAdornment: (
-                    <i className="bi bi-lock" />
-                  ),
-                }}
+                fullWidth
+                variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
@@ -92,22 +78,24 @@ export const LoginPage = () => {
                 color="primary"
                 disabled={isAuthenticated}
                 className="me-3"
+                startIcon={<i className="bi bi-box-arrow-in-right me-2"></i>}
               >
                 Iniciar sesión
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                fullWidth
-                variant="contained"
-                color="secondary"
-                onClick={onGoogleSignIn}
-                disabled={isAuthenticated}
-                startIcon={<i className="bi bi-google" />}
-              >
-                Iniciar sesión con Google
-              </Button>
-            </Grid>
+  <Button
+    fullWidth
+    variant="contained"
+    sx={{ backgroundColor: '#d32f2f', '&:hover': { backgroundColor: '#b71c1c' } }}
+    onClick={onGoogleSignIn}
+    disabled={isAuthenticated}
+    startIcon={<i className="bi bi-google" />}
+  >
+    Iniciar sesión con Google
+  </Button>
+</Grid>
+
           </Grid>
           <Grid container justifyContent="flex-end" className="mt-3">
             <Grid item>

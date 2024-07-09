@@ -5,13 +5,13 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useForm } from '../../hooks';
 import { startCreatingUserWithEmaiPassword } from '../../store/auth/thunks';
-import './loginPage.css';
+import './styles.css';
 import { Alert, Grid, Typography, Container } from '@mui/material';
 
 const formData = {
-  email: 'roberto@gmail.com',
-  password: '1234556',
-  displayName: 'Roberto Gonzalez'
+  email: '',
+  password: '',
+  displayName: ''
 };
 
 const formValidations = {
@@ -89,8 +89,12 @@ export const RegisterPage = () => {
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={12} display={!!errorMessage ? '' : 'none'}>
-              <Alert severity='error'>{errorMessage}</Alert>
+            <Grid item xs={12}>
+              {errorMessage && (
+                <Alert severity="error">
+                  {errorMessage}
+                </Alert>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Button 

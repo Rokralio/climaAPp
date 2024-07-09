@@ -1,5 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom"
-import { Navbar } from "../componentes/ui/navbar/Navbar"
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navbar } from '../componentes';
 import { ClimaPage } from '../ClimaPage'
 
 export const ClimaRoute = () => {

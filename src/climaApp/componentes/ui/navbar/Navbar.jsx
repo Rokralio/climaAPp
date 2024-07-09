@@ -1,10 +1,13 @@
 import {  useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink,  } from 'react-router-dom';
+import { startLogout } from '../../../../store';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 export const Navbar = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const navigate = useNavigate();
+  const { displayName } = useSelector( state => state.auth );
+  const dispatch = useDispatch();
 
   const handleToggle = () => {
     setIsNavbarOpen(!isNavbarOpen);
@@ -15,9 +18,7 @@ export const Navbar = () => {
   };
 
   const onLogout = () => {
-    navigate('climaapp/login', {
-      replace: true
-    });
+    dispatch( startLogout() );
     
     closeNavbar();
   };
@@ -43,7 +44,7 @@ export const Navbar = () => {
         <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item ms-auto">
-              {/* <span className='nav-link text-info'>{ user?.name }</span> */}
+              <span className='nav-link text-info mt-2'>{ displayName }</span>
             </li>
             <li className="nav-item">
               <button 
