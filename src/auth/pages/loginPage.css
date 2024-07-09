@@ -1,3 +1,10 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
 .login-background {
   background-image: url('../../assets/images/predeterminado.jpg');
   background-size: cover;
@@ -8,18 +15,31 @@
   top: 0;
   left: 15%;
   right: 15%;
-  overflow: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  transition: background-image 0.5s ease-in-out;
 }
 
 .login-container {
-  background-color: rgba(211,211,211);
+  background-color: rgba(211, 211, 211, 0.9);
   position: relative;
-  width: 50%;
+  width: 90%;
+  padding: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin: 0 auto;
+  max-height: 90vh;
+  overflow: auto;
 }
 
 @media (max-width: 1024px) {
+  .login-background {
+    width: 70%;
+    left: 15%;
+    right: 15%;
+  }
   .login-container {
-    width: 50%;
+    width: 90%;
     left: 0;
     right: 0;
   }
@@ -38,3 +58,5 @@
     margin: 0;
   }
 }
+
+

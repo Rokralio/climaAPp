@@ -1,11 +1,10 @@
-import { useContext, useState } from 'react';
+import {  useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../../../auth/';
+
 
 export const Navbar = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const navigate = useNavigate();
-  const { user, logout } = useContext( AuthContext )
 
   const handleToggle = () => {
     setIsNavbarOpen(!isNavbarOpen);
@@ -19,7 +18,7 @@ export const Navbar = () => {
     navigate('climaapp/login', {
       replace: true
     });
-    logout();
+    
     closeNavbar();
   };
 
@@ -44,7 +43,7 @@ export const Navbar = () => {
         <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item ms-auto">
-              <span className='nav-link text-info'>{ user?.name }</span>
+              {/* <span className='nav-link text-info'>{ user?.name }</span> */}
             </li>
             <li className="nav-item">
               <button 

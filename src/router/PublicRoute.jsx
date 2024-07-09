@@ -1,14 +1,14 @@
-import { useContext } from 'react';
-import { AuthContext } from '../auth';
-import { Navigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
+// import { useContext } from 'react';
+// import { AuthContext } from '../auth';
+// import { Navigate } from 'react-router-dom';
+// import PropTypes from 'prop-types';
 
-export const PublicRoute = ({ children }) => {
+// export const PublicRoute = ({ children }) => {
 
-  const { logged } = useContext( AuthContext );
-  return !logged ? children : <Navigate to="climaapp/" />;
-}
+//   const { logged } = useContext( AuthContext );
+//   return !logged ? children : <Navigate to="climaapp/" />;
+// }
 
-PublicRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+// PublicRoute.propTypes = {
+//   children: PropTypes.node.isRequired,
+// };
