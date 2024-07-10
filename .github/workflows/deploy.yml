@@ -33,9 +33,9 @@ jobs:
         run: yarn build
 
       - name: Deploy to GitHub Pages
+        env:
+          GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
         run: |
           git config --global user.email "rjgonzalez.1996@gmail.com"
           git config --global user.name "Rokralio"
           yarn run gh-pages -d dist
-        env:
-          GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
