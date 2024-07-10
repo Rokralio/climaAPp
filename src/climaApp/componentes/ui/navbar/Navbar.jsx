@@ -44,7 +44,7 @@ export const Navbar = () => {
         <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item ms-auto">
-              <span className='nav-link text-info mt-2'>{ displayName }</span>
+              <span className='nav-link text-info'>{ displayName }</span>
             </li>
             <li className="nav-item">
               <button 

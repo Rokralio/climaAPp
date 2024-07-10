@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { ApiClimaApp } from './componentes/api/openweather/ApiClimaApp';
-import { GetClimaFondo } from "./componentes/ImgFondo/GetClimaFondo";
+import { ApiClimaApp, GetClimaFondo } from './componentes';
 import './climaPage.css';
 
 export function ClimaPage() {

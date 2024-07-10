@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install
 
-ENV BASE_URL="/"
+ENV VITE_BASE_URL="/"
 COPY . .
 RUN yarn build
 

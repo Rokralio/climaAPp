@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import './styles.css';
 import { useForm } from '../../hooks';
-import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth';
+import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store';
 import { Grid, TextField, Button, Alert, Typography, Container } from '@mui/material';
+import './styles.css';
 
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector(state => state.auth);

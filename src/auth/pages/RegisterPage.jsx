@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useForm } from '../../hooks';
-import { startCreatingUserWithEmaiPassword } from '../../store/auth/thunks';
-import './styles.css';
 import { Alert, Grid, Typography, Container } from '@mui/material';
+import { useForm } from '../../hooks';
+import { startCreatingUserWithEmaiPassword } from '../../store';
+import './styles.css';
 
 const formData = {
   email: '',

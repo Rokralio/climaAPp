@@ -1,9 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import { CityForm } from "../../ui/Form/CityForm";
-import { ApiCountries } from "../restcountries/ApiCountries";
-import { BtSwitch } from "../../ui/BtSwitch/BtSwitch";
+import { ApiCountries, BtSwitch, CityForm } from '../../../componentes';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
