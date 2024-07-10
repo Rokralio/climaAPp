@@ -1,0 +1,38 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Cambia esto si quieres desplegar desde otra rama
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.9.1'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        env:
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_APIKEY: ${{ secrets.VITE_APIKEY }}
+          VITE_AUTHDOMAIN: ${{ secrets.VITE_AUTHDOMAIN }}
+          VITE_PROJECTID: ${{ secrets.VITE_PROJECTID }}
+          VITE_STORAGEBUCKET: ${{ secrets.VITE_STORAGEBUCKET }}
+          VITE_MESSAGINGSENDERID: ${{ secrets.VITE_MESSAGINGSENDERID }}
+          VITE_APPID: ${{ secrets.VITE_APPID }}
+        run: yarn build
+
+      - name: Deploy to GitHub Pages
+        run: yarn deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
