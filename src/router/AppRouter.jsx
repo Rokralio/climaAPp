@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ClimaRoute } from '../climaApp';
 import { AuthRoutes } from '../auth';
-import { CheckingAuth } from '../ui';
 import { useCheckAuth } from '../hooks';
+import  { CheckingAuth }  from '../ui';
 
 export const AppRouter = () => {
 

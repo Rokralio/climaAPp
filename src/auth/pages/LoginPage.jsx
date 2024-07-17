@@ -36,58 +36,75 @@ export const LoginPage = () => {
         <form onSubmit={onSubmit}>
           <Grid container spacing={2}>
           <Grid item xs={12} className="mb-3">
-              <TextField
-                type="email"
-                className="form-control"
-                id="email"
-                label="Correo"
-                placeholder="correo@gmail.com"
-                name="email"
-                value={email}
-                onChange={onInputChange}
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12} className="mb-3">
-              <TextField
-                type="password"
-                className="form-control"
-                id="password"
-                label="Contraseña"
-                placeholder="Ingrese su contraseña"
-                name="password"
-                value={password}
-                onChange={onInputChange}
-                fullWidth
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              {errorMessage && (
-                <Alert severity="error">
-                  {errorMessage}
-                </Alert>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                disabled={isAuthenticated}
-                className="me-3"
-                startIcon={<i className="bi bi-box-arrow-in-right me-2"></i>}
-              >
-                Iniciar sesión
-              </Button>
-            </Grid>
-            <Grid item xs={12}>
+            <TextField
+              type="email"
+              className="form-control"
+              id="email"
+              label="Correo"
+              placeholder="correo@gmail.com"
+              name="email"
+              value={email}
+              onChange={onInputChange}
+              fullWidth
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12} className="mb-3">
+            <TextField
+              type="password"
+              className="form-control"
+              id="password"
+              label="Contraseña"
+              placeholder="Ingrese su contraseña"
+              name="password"
+              value={password}
+              onChange={onInputChange}
+              fullWidth
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            {errorMessage && (
+              <Alert severity="error">
+                {errorMessage}
+              </Alert>
+            )}
+          </Grid>
+          <Grid item xs={12} sx={{ marginBottom: '-10px' }}>
+  <Button
+    type="submit"
+    fullWidth
+    variant="contained"
+    color="primary"
+    disabled={isAuthenticated}
+    className="me-3"
+    startIcon={<i className="bi bi-box-arrow-in-right me-2"></i>}
+    sx={{ 
+      boxShadow: 'none',
+      '&:hover': { 
+        boxShadow: 'none'
+      },
+    }}
+  >
+    Iniciar sesión
+  </Button>
+</Grid>
+
+<Grid item xs={12}>
   <Button
     fullWidth
     variant="contained"
-    sx={{ backgroundColor: '#d32f2f', '&:hover': { backgroundColor: '#b71c1c' } }}
+    sx={{ 
+      backgroundColor: '#ffffff', 
+      color: '#DB4437',
+      boxShadow: 'none',
+      border: '1px solid transparent',
+      '&:hover': { 
+        backgroundColor: '#ffffff',
+        border: '1px solid #DB4437',
+        boxShadow: 'none'
+      },
+    }}
     onClick={onGoogleSignIn}
     disabled={isAuthenticated}
     startIcon={<i className="bi bi-google" />}
@@ -95,6 +112,9 @@ export const LoginPage = () => {
     Iniciar sesión con Google
   </Button>
 </Grid>
+
+
+
 
           </Grid>
           <Grid container justifyContent="flex-end" className="mt-3">
