@@ -1,7 +1,7 @@
 import {  useState } from 'react';
 import { NavLink,  } from 'react-router-dom';
-import { startLogout } from '../../../../store';
 import { useDispatch, useSelector } from 'react-redux';
+import { startLogout } from '../../../../store';
 
 
 export const Navbar = () => {
@@ -23,9 +23,17 @@ export const Navbar = () => {
     closeNavbar();
   };
 
+  const refreshPage = () => {
+    window.location.reload()
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2 fixed-top">
       <div className="container-fluid">
+            <h1 
+              className="fw-bold text-white me-4" 
+              onClick={ refreshPage } 
+              style={{cursor: 'pointer'}}>ClimaApp</h1>
         <ul className="navbar-nav me-auto">
           <li className="nav-item">
             <NavLink className="nav-link" to="climaapp/" end onClick={closeNavbar}>Home</NavLink>

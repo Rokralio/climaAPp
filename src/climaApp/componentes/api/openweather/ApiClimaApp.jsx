@@ -41,7 +41,7 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   };
 
   return (
-    <div className="get-clima-fondo">
+    <div className="cuadro-main">
       <CityForm onFormSubmit={envForm} loading={cargando} />
       {error && (
         <p className="h5 text-center text-danger p-2 px-3 mt-1" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)', maxWidth: '100%', overflowWrap: 'break-word' }}>

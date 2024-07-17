@@ -19,13 +19,11 @@ export const CityForm = ({ onFormSubmit, loading }) => {
     e.target.style.boxShadow = '0 0 0 0px #ccc';
 };
 
-const refreshPage = () => {
-  window.location.reload()
-}
+
 
   return (
     <div className="p-3 text-center" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
-      <h1 className="fw-bold mb-3" onClick={ refreshPage } style={{cursor: 'pointer'}}>ClimaApp</h1>
+      <h1 className="fw-bold mb-3" >Bienvenido</h1>
       <form onSubmit={handleSubmit}>
         <div className="m-1">
           <input
