@@ -1,0 +1,51 @@
+.btn-historial {
+  width: 100%;
+  background-color: rgba(211, 211, 211);
+  color: #000000;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.pergamino {
+  background: rgba(219, 219, 219, 0.9);
+  margin-top: 1px;
+  border: none;
+  padding: 3px 20px; /* Corrige el padding */
+}
+
+.pergamino-item {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #808080;
+  padding: 0 3px;
+}
+
+.pergamino-item:last-child {
+  border-bottom: none;
+}
+
+.list-group-item-heading {
+  font-weight: bold;
+  background-color: rgba(211, 211, 211, 0.7); /* Fondo ligero para los encabezados */
+}
+
+.list-group-item-heading .d-flex {
+  font-weight: bold;
+}
+
+.list-group-item .d-flex {
+  justify-content: space-between; /* Alinea las columnas */
+}
+
+.list-group-item span {
+  flex: 1; /* Asegura que los elementos de la fila ocupen el espacio disponible */
+}
+
+.list-group-item span:first-child {
+  text-align: left;
+}
+
+.list-group-item span:last-child {
+  text-align: right;
+}

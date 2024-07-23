@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export const CityForm = ({ onFormSubmit, loading }) => {
   const [city, setCity] = useState('');
@@ -10,20 +10,17 @@ export const CityForm = ({ onFormSubmit, loading }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const cleanEspacios = city.replace(/\s+/g, ' ').trim();
-    onFormSubmit(cleanEspacios);
+    const cleanCityName = city.replace(/\s+/g, ' ').trim();
+    onFormSubmit(cleanCityName);
     setCity('');
   };
 
   const handleFocus = (e) => {
     e.target.style.boxShadow = '0 0 0 0px #ccc';
-};
-
-
+  };
 
   return (
     <div className="p-3 text-center" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
-      <h1 className="fw-bold mb-3" >Bienvenido</h1>
       <form onSubmit={handleSubmit}>
         <div className="m-1">
           <input
@@ -35,12 +32,14 @@ export const CityForm = ({ onFormSubmit, loading }) => {
             required
             className="form-control rounded-0"
             onFocus={handleFocus}
-            style={{cursor: 'pointer'}}
+            style={{ cursor: 'pointer' }}
           />
         </div>
         <div className="m-1 d-flex justify-content-center">
           {!loading && (
-            <button type='submit' className="btn btn-sm fs-2 p-0 fw-bold" style={{ minWidth: '100%', backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}>Enviar</button>
+            <button type='submit' className="btn btn-sm fs-2 p-0 fw-bold" style={{ minWidth: '100%', backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}>
+              Enviar
+            </button>
           )}
           {loading && (
             <div className="spinner-border text-secondary" role="status">

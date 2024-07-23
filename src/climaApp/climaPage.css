@@ -11,6 +11,10 @@ html, body {
   padding: 0;
 }
 
+.api-container {
+  width: 80%;
+}
+
 .cuadro-main {
   position: relative;
   width: 90%;
