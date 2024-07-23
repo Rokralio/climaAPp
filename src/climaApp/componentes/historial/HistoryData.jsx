@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import './historyData.css'; // Asegúrate de tener los estilos adecuados aquí
+import './historyData.css';
 
 export const HistoryData = ({ historial }) => {
 
@@ -54,7 +54,7 @@ HistoryData.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      timestamp: PropTypes.string, // Hacer opcional
+      timestamp: PropTypes.string,
       tiempoRestante: PropTypes.number.isRequired
     })
   ).isRequired
