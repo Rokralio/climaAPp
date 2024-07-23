@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { ApiCountries, BtSwitch, CityForm } from '../../../componentes';
+import { HistoryData } from "../../historial/HistoryData";
+import { fetchHistorialData, saveCityToFirestore } from "../../../../store/historial/thunks";
+import { usePeriodicCleanup } from "../../../../hooks/usePeriodicCleanup";
+
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -12,6 +17,9 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
   const [mostrarCelsius, setMostrarCelsius] = useState(true);
+  const dispatch = useDispatch();
+  const historial = useSelector((state) => state.historial.data);
+  const { uid } = useSelector((state) => state.auth);
 
   const getClima = async (city) => {
     setCargando(true);
@@ -23,6 +31,11 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
       const resp = await axios.get(getApiClima);
       setClima(resp.data);
       setDescripcionClima(capitalizeFirstLetter(resp.data.weather?.[0]?.description || ''));
+
+      if (uid) {
+        dispatch(saveCityToFirestore(city));
+      }
+
     } catch (error) {
       console.error('Error al obtener la ciudad', error);
       setError(`No se encontró el clima de "${city}"`);
@@ -39,6 +52,14 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const envForm = (city) => {
     getClima(city);
   };
+
+  useEffect(() => {
+    if (uid) {
+      dispatch(fetchHistorialData(uid));
+    }
+  }, [dispatch, uid]);
+
+  usePeriodicCleanup(uid, 60 * 1000);
 
   return (
     <div className="cuadro-main">
@@ -59,7 +80,7 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
           <table className="table table-striped-columns">
             <tbody>
               <tr>
-              <td className="colTd">País:</td>
+                <td className="colTd">País:</td>
                 <ApiCountries countryCode={clima.sys.country} />
               </tr>
               <tr>
@@ -67,48 +88,49 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
                 <td className="colData">{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</td>
               </tr>
               {mostrarCelsius ? (
-          <>
-            <tr>
-              <td className="colTd">Temperatura:</td>
-              <td className="colData">{clima.main.temp} °C</td>
-            </tr>
-            <tr>
-              <td className="colTd">Sensación térmica:</td>
-              <td className="colData">{clima.main.feels_like} °C</td>
-            </tr>
-            <tr>
-              <td className="colTd">Temperatura mínima:</td>
-              <td className="colData">{clima.main.temp_min} °C</td>
-            </tr>
-            <tr>
-              <td className="colTd">Temperatura máxima:</td>
-              <td className="colData">{clima.main.temp_max} °C</td>
-            </tr>
-          </>
-        ) : (
-          <>
-            <tr>
-              <td className="colTd">Temperatura:</td>
-              <td className="colData">{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</td>
-            </tr>
-            <tr>
-              <td className="colTd">Sensación térmica:</td>
-              <td className="colData">{(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</td>
-            </tr>
-            <tr>
-              <td className="colTd">Temperatura mínima:</td>
-              <td className="colData">{(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</td>
-            </tr>
-            <tr>
-              <td className="colTd">Temperatura máxima:</td>
-              <td className="colData">{(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</td>
-            </tr>
-          </>
-        )}
+                <>
+                  <tr>
+                    <td className="colTd">Temperatura:</td>
+                    <td className="colData">{clima.main.temp} °C</td>
+                  </tr>
+                  <tr>
+                    <td className="colTd">Sensación térmica:</td>
+                    <td className="colData">{clima.main.feels_like} °C</td>
+                  </tr>
+                  <tr>
+                    <td className="colTd">Temperatura mínima:</td>
+                    <td className="colData">{clima.main.temp_min} °C</td>
+                  </tr>
+                  <tr>
+                    <td className="colTd">Temperatura máxima:</td>
+                    <td className="colData">{clima.main.temp_max} °C</td>
+                  </tr>
+                </>
+              ) : (
+                <>
+                  <tr>
+                    <td className="colTd">Temperatura:</td>
+                    <td className="colData">{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</td>
+                  </tr>
+                  <tr>
+                    <td className="colTd">Sensación térmica:</td>
+                    <td className="colData">{(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</td>
+                  </tr>
+                  <tr>
+                    <td className="colTd">Temperatura mínima:</td>
+                    <td className="colData">{(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</td>
+                  </tr>
+                  <tr>
+                    <td className="colTd">Temperatura máxima:</td>
+                    <td className="colData">{(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</td>
+                  </tr>
+                </>
+              )}
             </tbody>
-        </table>
+          </table>
         </div>
       )}
+      <HistoryData historial={historial} />
     </div>
   );
 };
