@@ -4,7 +4,6 @@ import { AuthRoutes } from '../auth';
 import { useCheckAuth } from '../hooks';
 import { CheckingAuth } from '../ui';
 
-
 export const AppRouter = () => {
   const { status } = useCheckAuth();
 
@@ -16,10 +15,10 @@ export const AppRouter = () => {
     <Routes>
       {
         status === 'authenticated'
-          ? <Route path='/*' element={<ClimaRoute />} />
-          : <Route path='/climaapp/*' element={<AuthRoutes />} />
+          ? <Route path="/*" element={<ClimaRoute />} />
+          : <Route path="/*" element={<AuthRoutes />} />
       }
-      <Route path='*' element={ <Navigate to='/climaapp/login'/> } />
+      <Route path="*" element={<Navigate to="/climaapp/login" />} />
     </Routes>
-  );
+  )
 }
