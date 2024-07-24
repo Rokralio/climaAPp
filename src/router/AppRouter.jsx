@@ -15,10 +15,10 @@ export const AppRouter = () => {
     <Routes>
       {
         status === 'authenticated'
-          ? <Route path="/*" element={<ClimaRoute />} />
-          : <Route path="/*" element={<AuthRoutes />} />
+          ? <Route path='/*' element={<ClimaRoute />} />
+          : <Route path='/*' element={<AuthRoutes />} />
       }
-      <Route path="*" element={<Navigate to="/climaapp/login" />} />
+      <Route path='*' element={<Navigate to='/climaapp/login' />} />
     </Routes>
   )
 }

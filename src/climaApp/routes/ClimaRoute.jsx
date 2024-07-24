@@ -7,9 +7,9 @@ export const ClimaRoute = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<ClimaPage />} />
-        <Route path="*" element={<Navigate to="/climaapp/" />} />
+      <Route path='/climaapp/' element={<ClimaPage />} />
+        <Route path='*' element={<Navigate to='/climaapp/' />} />
       </Routes>
     </>
-  )
-}
+  );
+};
