@@ -2,28 +2,24 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { ClimaRoute } from '../climaApp';
 import { AuthRoutes } from '../auth';
 import { useCheckAuth } from '../hooks';
-import  { CheckingAuth }  from '../ui';
+import { CheckingAuth } from '../ui';
+
 
 export const AppRouter = () => {
+  const { status } = useCheckAuth();
 
-const { status } = useCheckAuth();
-
-  if ( status === 'checking' ) {
+  if (status === 'checking') {
     return <CheckingAuth />;
   }
 
   return (
-    <>
-      <Routes>
-        
-        {
-          status === 'authenticated'
+    <Routes>
+      {
+        status === 'authenticated'
           ? <Route path='/*' element={<ClimaRoute />} />
-          : <Route path='/*' element={<AuthRoutes />} />
-        }
-
-        <Route path='/*' element={ <Navigate to='climaapp/login'/> } />
-      </Routes>
-    </>
-  )
+          : <Route path='/climaapp/*' element={<AuthRoutes />} />
+      }
+      <Route path='*' element={ <Navigate to='/climaapp/login'/> } />
+    </Routes>
+  );
 }
