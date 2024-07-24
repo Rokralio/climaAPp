@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Page Not Found</title>
-  <script>
-    // Redirigir todas las rutas a la aplicación de React
-    window.location.replace("/climaapp" + window.location.pathname + window.location.search);
-  </script>
-</head>
-<body>
-  <h1>Page Not Found</h1>
-  <p>Redirecting...</p>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
+    <script type="text/javascript">
+      // Redirigir a la ruta base
+      var path = window.location.pathname;
+      var newPath = '/climaapp/' + path.substring(1);
+      window.location.href = newPath;
+    </script>
+  </head>
+  <body>
+    <h1>Page Not Found</h1>
+    <p>Redirecting...</p>
+  </body>
 </html>
