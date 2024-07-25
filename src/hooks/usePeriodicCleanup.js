@@ -1,18 +1,31 @@
+// import { useEffect } from 'react';
+// import { useDispatch } from 'react-redux';
+// import { borrarCiudadesDeFirebase } from '../store/historial/thunks';
+
+
+// export const usePeriodicCleanup = () => {
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       dispatch(borrarCiudadesDeFirebase());
+//     }, 24 * 60 * 60 * 1000);
+
+//     return () => clearInterval(interval);
+//   }, [dispatch]);
+// };
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { borrarCiudadesDeFirebase } from '../store/historial/thunks';
 
-
-export const usePeriodicCleanup = (uid, interval = 60000) => {
+export const usePeriodicCleanup = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (uid) {
-      const intervalId = setInterval(() => {
-        dispatch(borrarCiudadesDeFirebase());
-      }, interval);
+    const intervalId = setInterval(() => {
+      dispatch(borrarCiudadesDeFirebase());
+    }, 60 * 1000); // 60 segundos
 
-      return () => clearInterval(intervalId); // Limpia el intervalo al desmontar el componente
-    }
-  }, [dispatch, uid, interval]);
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
 };

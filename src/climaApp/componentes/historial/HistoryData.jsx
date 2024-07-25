@@ -5,7 +5,7 @@ export const HistoryData = ({ historial }) => {
 
   const sortedHistorial = [...historial]
     .sort((a, b) => (b.timestamp ? new Date(b.timestamp) : 0) - (a.timestamp ? new Date(a.timestamp) : 0))
-    .slice(0, 5);
+    .slice(0, 10);
 
   return (
     <div className="historial-container mt-1">
@@ -27,7 +27,6 @@ export const HistoryData = ({ historial }) => {
             <li className="list-group-item list-group-item-heading">
               <div className="d-flex justify-content-between">
                 <span>Ciudad</span>
-                <span>Tiempo</span>
               </div>
             </li>
             {sortedHistorial.length === 0 ? (
@@ -37,7 +36,6 @@ export const HistoryData = ({ historial }) => {
                 <li key={ciudad.id} className="list-group-item pergamino-item">
                   <div className="d-flex justify-content-between">
                     <span>{ciudad.name}</span>
-                    <span>{Math.floor((ciudad.tiempoRestante || 0) / 60000)} minutos</span>
                   </div>
                 </li>
               ))
@@ -54,8 +52,7 @@ HistoryData.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      timestamp: PropTypes.string,
-      tiempoRestante: PropTypes.number.isRequired
+      timestamp: PropTypes.string
     })
   ).isRequired
 };

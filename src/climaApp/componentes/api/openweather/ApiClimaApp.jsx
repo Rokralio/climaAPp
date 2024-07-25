@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiCountries, BtSwitch, CityForm } from '../../../componentes';
 import { HistoryData } from "../../historial/HistoryData";
-import { fetchHistorialData, saveCityToFirestore } from "../../../../store/historial/thunks";
-import { usePeriodicCleanup } from "../../../../hooks/usePeriodicCleanup";
-
+import { saveCityToFirestore } from "../../../../store/historial/thunks";
+import { usePeriodicCleanup } from '../../../../hooks/usePeriodicCleanup';
+import { useFetchHistorialData } from '../../../../hooks/useFetchHistorialData';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const convertToFahrenheit = (celsius) => {
+  return (celsius * 9/5 + 32).toFixed(2);
 };
 
 export const ApiClimaApp = ({ setDescripcionClima }) => {
@@ -20,6 +24,9 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const dispatch = useDispatch();
   const historial = useSelector((state) => state.historial.data);
   const { uid } = useSelector((state) => state.auth);
+
+  usePeriodicCleanup();
+  useFetchHistorialData();
 
   const getClima = async (city) => {
     setCargando(true);
@@ -52,14 +59,6 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const envForm = (city) => {
     getClima(city);
   };
-
-  useEffect(() => {
-    if (uid) {
-      dispatch(fetchHistorialData(uid));
-    }
-  }, [dispatch, uid]);
-
-  usePeriodicCleanup(uid, 60 * 1000);
 
   return (
     <div className="cuadro-main">
@@ -110,19 +109,20 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
                 <>
                   <tr>
                     <td className="colTd">Temperatura:</td>
-                    <td className="colData">{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</td>
+                    {/* <td className="colData">{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</td> */}
+                    <td className="colData">{convertToFahrenheit( clima.main.temp )} °F</td>
                   </tr>
                   <tr>
                     <td className="colTd">Sensación térmica:</td>
-                    <td className="colData">{(clima.main.feels_like * 9/5 + 32).toFixed(2)} °F</td>
+                    <td className="colData">{convertToFahrenheit( clima.main.feels_like )} °F</td>
                   </tr>
                   <tr>
                     <td className="colTd">Temperatura mínima:</td>
-                    <td className="colData">{(clima.main.temp_min * 9/5 + 32).toFixed(2)} °F</td>
+                    <td className="colData">{convertToFahrenheit( clima.main.temp_min )} °F</td>
                   </tr>
                   <tr>
                     <td className="colTd">Temperatura máxima:</td>
-                    <td className="colData">{(clima.main.temp_max * 9/5 + 32).toFixed(2)} °F</td>
+                    <td className="colData">{convertToFahrenheit( clima.main.temp_max )} °F</td>
                   </tr>
                 </>
               )}
