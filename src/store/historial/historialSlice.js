@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   isSaving: false,
   messageSave: '',
-  data: []
+  data: [],
+  requestCount: 0,
 };
 
 export const historialSlice = createSlice({
@@ -24,21 +25,28 @@ export const historialSlice = createSlice({
     },
     addCityToHistorial: (state, action) => {
       state.data.push(action.payload);
+      state.requestCount += 1;
     },
     setHistorialData: (state, action) => {
       state.data = action.payload;
-    }
+    },
+    resetRequestCount: (state) => {
+      state.requestCount = 0;
+    },
+    setRequestCount: (state, action) => {
+      state.requestCount = action.payload;
+    },
   }
 });
 
-// Exportar las acciones generadas por createSlice
 export const { 
   startSaving, 
   savingSuccess, 
   savingFailure, 
   addCityToHistorial, 
-  setHistorialData 
+  setHistorialData, 
+  resetRequestCount, 
+  setRequestCount 
 } = historialSlice.actions;
 
-// Exportar el reducer para usar en el store
 export default historialSlice.reducer;

@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiCountries, BtSwitch, CityForm } from '../../../componentes';
 import { HistoryData } from "../../historial/HistoryData";
-import { saveCityToFirestore } from "../../../../store/historial/thunks";
+import { saveCityToFirestore, getRequestCountFromFirestore } from "../../../../store/historial/thunks";
 import { usePeriodicCleanup } from '../../../../hooks/usePeriodicCleanup';
 import { useFetchHistorialData } from '../../../../hooks/useFetchHistorialData';
 
@@ -23,12 +23,24 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const [mostrarCelsius, setMostrarCelsius] = useState(true);
   const dispatch = useDispatch();
   const historial = useSelector((state) => state.historial.data);
+  const requestCount = useSelector((state) => state.historial.requestCount);
   const { uid } = useSelector((state) => state.auth);
 
   usePeriodicCleanup();
   useFetchHistorialData();
 
+  useEffect(() => {
+    if (uid) {
+      dispatch(getRequestCountFromFirestore(uid));
+    }
+  }, [dispatch, uid]);
+
   const getClima = async (city) => {
+    if (requestCount >= 10) {
+      setError('Has alcanzado el límite de 10 peticiones.');
+      return;
+    }
+
     setCargando(true);
     setError(null);
 
@@ -61,76 +73,79 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   };
 
   return (
-    <div className="cuadro-main">
-      <CityForm onFormSubmit={envForm} loading={cargando} />
-      {error && (
-        <p className="h5 text-center text-danger p-2 px-3 mt-1" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)', maxWidth: '100%', overflowWrap: 'break-word' }}>
-          {error}
-        </p>
-      )}
-      {clima && (
-        <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
-          <div className="d-flex justify-content-between align-items-center w-100">
-            <h2>{clima.name}</h2>
-            <div className="ms-auto">
-              <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
+    <div className="cuadro-main d-flex">
+      <div className="content-container w-60">
+        <CityForm onFormSubmit={envForm} loading={cargando} />
+        {error && (
+          <p className="h5 text-center text-danger p-2 px-3 mt-1" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)', maxWidth: '100%', overflowWrap: 'break-word' }}>
+            {error}
+          </p>
+        )}
+        {clima && (
+          <div className='p-2 px-3 mt-1' style={{ backgroundColor: 'rgba(225, 225, 225, 0.98)' }}>
+            <div className="d-flex justify-content-between align-items-center w-100">
+              <h2>{clima.name}</h2>
+              <div className="ms-auto">
+                <BtSwitch mostrarCelsius={mostrarCelsius} toggleTemperatureUnit={toggleTemperatureUnit} />
+              </div>
             </div>
+            <table className="table table-striped-columns">
+              <tbody>
+                <tr>
+                  <td className="colTd">País:</td>
+                  <ApiCountries countryCode={clima.sys.country} />
+                </tr>
+                <tr>
+                  <td className="colTd">Tipo de clima:</td>
+                  <td className="colData">{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</td>
+                </tr>
+                {mostrarCelsius ? (
+                  <>
+                    <tr>
+                      <td className="colTd">Temperatura:</td>
+                      <td className="colData">{clima.main.temp} °C</td>
+                    </tr>
+                    <tr>
+                      <td className="colTd">Sensación térmica:</td>
+                      <td className="colData">{clima.main.feels_like} °C</td>
+                    </tr>
+                    <tr>
+                      <td className="colTd">Temperatura mínima:</td>
+                      <td className="colData">{clima.main.temp_min} °C</td>
+                    </tr>
+                    <tr>
+                      <td className="colTd">Temperatura máxima:</td>
+                      <td className="colData">{clima.main.temp_max} °C</td>
+                    </tr>
+                  </>
+                ) : (
+                  <>
+                    <tr>
+                      <td className="colTd">Temperatura:</td>
+                      <td className="colData">{convertToFahrenheit(clima.main.temp)} °F</td>
+                    </tr>
+                    <tr>
+                      <td className="colTd">Sensación térmica:</td>
+                      <td className="colData">{convertToFahrenheit(clima.main.feels_like)} °F</td>
+                    </tr>
+                    <tr>
+                      <td className="colTd">Temperatura mínima:</td>
+                      <td className="colData">{convertToFahrenheit(clima.main.temp_min)} °F</td>
+                    </tr>
+                    <tr>
+                      <td className="colTd">Temperatura máxima:</td>
+                      <td className="colData">{convertToFahrenheit(clima.main.temp_max)} °F</td>
+                    </tr>
+                  </>
+                )}
+              </tbody>
+            </table>
           </div>
-          <table className="table table-striped-columns">
-            <tbody>
-              <tr>
-                <td className="colTd">País:</td>
-                <ApiCountries countryCode={clima.sys.country} />
-              </tr>
-              <tr>
-                <td className="colTd">Tipo de clima:</td>
-                <td className="colData">{capitalizeFirstLetter(clima.weather?.[0]?.description || '')}</td>
-              </tr>
-              {mostrarCelsius ? (
-                <>
-                  <tr>
-                    <td className="colTd">Temperatura:</td>
-                    <td className="colData">{clima.main.temp} °C</td>
-                  </tr>
-                  <tr>
-                    <td className="colTd">Sensación térmica:</td>
-                    <td className="colData">{clima.main.feels_like} °C</td>
-                  </tr>
-                  <tr>
-                    <td className="colTd">Temperatura mínima:</td>
-                    <td className="colData">{clima.main.temp_min} °C</td>
-                  </tr>
-                  <tr>
-                    <td className="colTd">Temperatura máxima:</td>
-                    <td className="colData">{clima.main.temp_max} °C</td>
-                  </tr>
-                </>
-              ) : (
-                <>
-                  <tr>
-                    <td className="colTd">Temperatura:</td>
-                    {/* <td className="colData">{(clima.main.temp * 9/5 + 32).toFixed(2)} °F</td> */}
-                    <td className="colData">{convertToFahrenheit( clima.main.temp )} °F</td>
-                  </tr>
-                  <tr>
-                    <td className="colTd">Sensación térmica:</td>
-                    <td className="colData">{convertToFahrenheit( clima.main.feels_like )} °F</td>
-                  </tr>
-                  <tr>
-                    <td className="colTd">Temperatura mínima:</td>
-                    <td className="colData">{convertToFahrenheit( clima.main.temp_min )} °F</td>
-                  </tr>
-                  <tr>
-                    <td className="colTd">Temperatura máxima:</td>
-                    <td className="colData">{convertToFahrenheit( clima.main.temp_max )} °F</td>
-                  </tr>
-                </>
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <HistoryData historial={historial} />
+        )}
+      </div>
+      <div className="history-container w-40 h-100">
+        <HistoryData historial={historial} requestCount={requestCount} />
+      </div>
     </div>
   );
 };

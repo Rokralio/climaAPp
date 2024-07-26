@@ -1,19 +1,3 @@
-// import { useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { borrarCiudadesDeFirebase } from '../store/historial/thunks';
-
-
-// export const usePeriodicCleanup = () => {
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       dispatch(borrarCiudadesDeFirebase());
-//     }, 24 * 60 * 60 * 1000);
-
-//     return () => clearInterval(interval);
-//   }, [dispatch]);
-// };
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { borrarCiudadesDeFirebase } from '../store/historial/thunks';

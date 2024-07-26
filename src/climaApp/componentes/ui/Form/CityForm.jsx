@@ -20,7 +20,7 @@ export const CityForm = ({ onFormSubmit, loading }) => {
   };
 
   return (
-    <div className="p-3 text-center" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)' }}>
+    <div className="p-3 text-center" style={{ backgroundColor: 'rgba(225, 225, 225, 0.98)' }}>
       <form onSubmit={handleSubmit}>
         <div className="m-1">
           <input

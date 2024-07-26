@@ -1,47 +1,26 @@
 import PropTypes from 'prop-types';
 import './historyData.css';
 
-export const HistoryData = ({ historial }) => {
-
+export const HistoryData = ({ historial, requestCount }) => { 
   const sortedHistorial = [...historial]
     .sort((a, b) => (b.timestamp ? new Date(b.timestamp) : 0) - (a.timestamp ? new Date(a.timestamp) : 0))
     .slice(0, 10);
 
   return (
-    <div className="historial-container mt-1">
-      <div>
-        <button
-          className="btn-historial"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapse"
-          aria-expanded="false"
-          aria-controls="collapse"
-        >
-          Historial
-        </button>
+    <div className="historial-container mt-0">
+      <div className="header">
+        <p className="header-item">Peticiones restantes: {10 - requestCount}</p>
       </div>
-      <div className="collapse" id="collapse">
-        <div className="card card-body pergamino rounded-0">
-          <ul className="list-group">
-            <li className="list-group-item list-group-item-heading">
+      <div className="card card-body pergamino rounded-0">
+        <ul className="list-group p-1">
+          {sortedHistorial.length > 0 && sortedHistorial.map((ciudad) => (
+            <li key={ciudad.id} className="list-group-item pergamino-item">
               <div className="d-flex justify-content-between">
-                <span>Ciudad</span>
+                <span>{ciudad.name}</span>
               </div>
             </li>
-            {sortedHistorial.length === 0 ? (
-              <li className="list-group-item">No hay ciudades en el historial.</li>
-            ) : (
-              sortedHistorial.map((ciudad) => (
-                <li key={ciudad.id} className="list-group-item pergamino-item">
-                  <div className="d-flex justify-content-between">
-                    <span>{ciudad.name}</span>
-                  </div>
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -54,5 +33,6 @@ HistoryData.propTypes = {
       name: PropTypes.string.isRequired,
       timestamp: PropTypes.string
     })
-  ).isRequired
+  ).isRequired,
+  requestCount: PropTypes.number.isRequired,
 };

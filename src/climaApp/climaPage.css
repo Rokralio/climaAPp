@@ -12,7 +12,7 @@ html, body {
 }
 
 .api-container {
-  width: 80%;
+  width: 100%;
 }
 
 .cuadro-main {
@@ -23,6 +23,20 @@ html, body {
   margin: 0 auto;
   max-height: 90vh;
   overflow: auto;
+  display: flex;
+  height: 100vh;
+}
+
+.content-container {
+  width: 77%;
+  padding-right: 1rem;
+  overflow-y: auto;
+}
+
+.history-container {
+  width: 23%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .colTd {
