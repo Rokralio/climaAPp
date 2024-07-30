@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { ApiCountries, BtSwitch, CityForm } from '../../../componentes';
-import { HistoryData } from "../../historial/HistoryData";
 import { saveCityToFirestore, getRequestCountFromFirestore } from "../../../../store/historial/thunks";
-import { usePeriodicCleanup } from '../../../../hooks/usePeriodicCleanup';
-import { useFetchHistorialData } from '../../../../hooks/useFetchHistorialData';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -22,12 +19,8 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const [error, setError] = useState(null);
   const [mostrarCelsius, setMostrarCelsius] = useState(true);
   const dispatch = useDispatch();
-  const historial = useSelector((state) => state.historial.data);
   const requestCount = useSelector((state) => state.historial.requestCount);
   const { uid } = useSelector((state) => state.auth);
-
-  usePeriodicCleanup();
-  useFetchHistorialData();
 
   useEffect(() => {
     if (uid) {
@@ -75,7 +68,7 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   return (
     <div className="cuadro-main d-flex">
       <div className="content-container w-60">
-        <CityForm onFormSubmit={envForm} loading={cargando} />
+        <CityForm onFormSubmit={envForm} loading={cargando} requestCount={requestCount} />
         {error && (
           <p className="h5 text-center text-danger p-2 px-3 mt-1" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)', maxWidth: '100%', overflowWrap: 'break-word' }}>
             {error}
@@ -142,9 +135,6 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
             </table>
           </div>
         )}
-      </div>
-      <div className="history-container w-40 h-100">
-        <HistoryData historial={historial} requestCount={requestCount} />
       </div>
     </div>
   );

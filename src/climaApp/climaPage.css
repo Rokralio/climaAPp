@@ -28,14 +28,7 @@ html, body {
 }
 
 .content-container {
-  width: 77%;
-  padding-right: 1rem;
-  overflow-y: auto;
-}
-
-.history-container {
-  width: 23%;
-  height: 100%;
+  width: 100%;
   overflow-y: auto;
 }
 

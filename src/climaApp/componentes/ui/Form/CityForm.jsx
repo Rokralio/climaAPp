@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-export const CityForm = ({ onFormSubmit, loading }) => {
+export const CityForm = ({ onFormSubmit, loading, requestCount }) => {
   const [city, setCity] = useState('');
 
   const handleCityChange = (event) => {
@@ -47,6 +47,9 @@ export const CityForm = ({ onFormSubmit, loading }) => {
             </div>
           )}
         </div>
+        <div className="mt-2">
+          <p className="fs-5">Peticiones restantes: {10 - requestCount}</p>
+        </div>
       </form>
     </div>
   );
@@ -55,4 +58,5 @@ export const CityForm = ({ onFormSubmit, loading }) => {
 CityForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  requestCount: PropTypes.number.isRequired, // Añadir esta línea
 };

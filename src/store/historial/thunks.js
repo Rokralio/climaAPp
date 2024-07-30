@@ -1,9 +1,20 @@
-import { doc, collection, setDoc, query, where, getDocs, writeBatch, getDoc } from 'firebase/firestore/lite';
+import { doc, setDoc, getDoc, Timestamp } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
-import { startSaving, savingSuccess, savingFailure, addCityToHistorial, setHistorialData, setRequestCount, resetRequestCount } from './historialSlice';
+import { startSaving, savingSuccess, savingFailure, setRequestCount, setHistorialData } from './historialSlice';
 
-const UN_MINUTO = 60 * 1000; // 60 segundos * 1000 milisegundos
 const REQUEST_LIMIT = 10;
+
+const convertTimestampToDate = (ciudades) => {
+  return ciudades.map((ciudad) => ({
+    ...ciudad,
+    timestamp: ciudad.timestamp.toDate().toISOString(),
+  }));
+};
+
+const convertDateToTimestamp = (ciudad) => ({
+  ...ciudad,
+  timestamp: Timestamp.fromDate(new Date(ciudad.timestamp)),
+});
 
 export const getRequestCountFromFirestore = (uid) => {
   return async (dispatch) => {
@@ -13,10 +24,13 @@ export const getRequestCountFromFirestore = (uid) => {
 
       if (docSnap.exists()) {
         const data = docSnap.data();
+        const ciudades = convertTimestampToDate(data.ciudades || []);
         dispatch(setRequestCount(data.requestCount || 0));
+        dispatch(setHistorialData(ciudades));
       } else {
-        await setDoc(docRef, { requestCount: 0 });
+        await setDoc(docRef, { requestCount: 0, ciudades: [] });
         dispatch(setRequestCount(0));
+        dispatch(setHistorialData([]));
       }
     } catch (e) {
       console.error('Error al obtener el contador de peticiones:', e);
@@ -55,62 +69,41 @@ export const saveCityToFirestore = (city) => {
     dispatch(startSaving());
 
     try {
-      const newDoc = doc(collection(FirebaseDB, `historial/${uid}/city`));
-      await setDoc(newDoc, registerCity);
+      const docRef = doc(FirebaseDB, `users/${uid}`);
+      const docSnap = await getDoc(docRef);
 
-      dispatch(addCityToHistorial({ id: newDoc.id, name: cleanEspacios }));
-      dispatch(updateRequestCountInFirestore(uid, requestCount + 1));
-      dispatch(savingSuccess('Ciudad guardada con éxito.'));
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const ciudades = data.ciudades || [];
+        const ciudadExiste = ciudades.some(ciudad => ciudad.name.toLowerCase() === cleanEspacios.toLowerCase());
+        if (ciudadExiste) {
+          dispatch(savingFailure('La ciudad ya está en el historial.'));
+          return;
+        }
+
+        const nuevasCiudades = [
+          ...ciudades,
+          convertDateToTimestamp(registerCity)
+        ];
+        
+        await setDoc(docRef, { 
+          requestCount: requestCount + 1, 
+          ciudades: nuevasCiudades 
+        }, { merge: true });
+
+        dispatch(updateRequestCountInFirestore(uid, requestCount + 1));
+        dispatch(savingSuccess('Ciudad guardada con éxito.'));
+      } else {
+        await setDoc(docRef, { 
+          requestCount: 1, 
+          ciudades: [convertDateToTimestamp(registerCity)] 
+        });
+        dispatch(updateRequestCountInFirestore(uid, 1));
+        dispatch(savingSuccess('Ciudad guardada con éxito.'));
+      }
     } catch (e) {
       console.error('Error al guardar la ciudad:', e);
       dispatch(savingFailure('Error al guardar la ciudad: ' + e.message));
-    }
-  };
-};
-
-export const borrarCiudadesDeFirebase = () => {
-  return async (dispatch, getState) => {
-    const { uid } = getState().auth;
-    const ahora = new Date();
-    const haceVeinticuatroHoras = new Date(ahora.getTime() - UN_MINUTO);
-
-    const ciudadesRef = collection(FirebaseDB, `historial/${uid}/city`);
-    const q = query(ciudadesRef, where("timestamp", "<", haceVeinticuatroHoras.toISOString()));
-
-    try {
-      const querySnapshot = await getDocs(q);
-      const batch = writeBatch(FirebaseDB);
-
-      querySnapshot.forEach((docSnapshot) => {
-        batch.delete(docSnapshot.ref);
-      });
-
-      await batch.commit();
-      dispatch(fetchHistorialData(uid));
-      dispatch(resetRequestCount());
-    } catch (e) {
-      console.error('Error al borrar ciudades:', e);
-    }
-  };
-};
-
-
-export const fetchHistorialData = (uid) => {
-  return async (dispatch) => {
-    const ciudadesRef = collection(FirebaseDB, `historial/${uid}/city`);
-    const q = query(ciudadesRef);
-
-    try {
-      const querySnapshot = await getDocs(q);
-      const cities = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        cities.push({ id: doc.id, ...data });
-      });
-
-      dispatch(setHistorialData(cities));
-    } catch (e) {
-      console.error('Error al obtener historial:', e);
     }
   };
 };
