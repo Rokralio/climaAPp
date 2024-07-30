@@ -32,10 +32,6 @@ export const ApiCountries = ({ countryCode }) => {
   );
 }
 
-
-
-
-
 ApiCountries.propTypes = {
   countryCode: PropTypes.string.isRequired,
 };
