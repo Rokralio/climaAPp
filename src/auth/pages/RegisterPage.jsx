@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Alert, Grid, Typography, Container } from '@mui/material';
+import { Alert, Grid, Typography, Container, InputAdornment } from '@mui/material';
 import { useForm } from '../../hooks';
 import { startCreatingUserWithEmaiPassword } from '../../store';
 import './styles.css';
@@ -46,8 +46,7 @@ export const RegisterPage = () => {
                 type="text"
                 className="form-control"
                 id="fullname"
-                label="Nombre Completo"
-                placeholder="Ingrese su nombre completo"
+                placeholder="Nombre Completo"
                 name="displayName"
                 value={displayName}
                 onChange={onInputChange}
@@ -55,6 +54,16 @@ export const RegisterPage = () => {
                 helperText={formSubmitted && displayNameValid}
                 fullWidth
                 variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i className="bi bi-person"></i>
+                    </InputAdornment>
+                  ),
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
             <Grid item xs={12} className="mb-3">
@@ -62,8 +71,7 @@ export const RegisterPage = () => {
                 type="email"
                 className="form-control"
                 id="email"
-                label="Correo"
-                placeholder="correo@gmail.com"
+                placeholder="Correo"
                 name="email"
                 value={email}
                 onChange={onInputChange}
@@ -71,6 +79,16 @@ export const RegisterPage = () => {
                 helperText={formSubmitted && emailValid}
                 fullWidth
                 variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i className="bi bi-envelope"></i>
+                    </InputAdornment>
+                  ),
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
             <Grid item xs={12} className="mb-3">
@@ -78,8 +96,7 @@ export const RegisterPage = () => {
                 type="password"
                 className="form-control"
                 id="password"
-                label="Contraseña"
-                placeholder="Ingrese su contraseña"
+                placeholder="Contraseña"
                 name="password"
                 value={password}
                 onChange={onInputChange}
@@ -87,6 +104,16 @@ export const RegisterPage = () => {
                 helperText={formSubmitted && passwordValid}
                 fullWidth
                 variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i className="bi bi-lock"></i>
+                    </InputAdornment>
+                  ),
+                }}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
             <Grid item xs={12}>

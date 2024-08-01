@@ -32,6 +32,13 @@ html, body {
   overflow-y: auto;
 }
 
+.historial-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40%, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
 .colTd {
   font-weight: bold;
 }

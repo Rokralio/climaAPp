@@ -1,12 +1,12 @@
-import {  useState } from 'react';
-import { NavLink,  } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../../../store';
-
+import { clearUserDataOnLogout } from '../../../../store/historial/thunks';
+import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
 
 export const Navbar = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const { displayName } = useSelector( state => state.auth );
+  const { displayName, uid } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleToggle = () => {
@@ -18,25 +18,32 @@ export const Navbar = () => {
   };
 
   const onLogout = () => {
-    dispatch( startLogout() );
-    
+    if (uid) {
+      dispatch(clearUserDataOnLogout(uid));
+    }
+    dispatch(startLogout());
     closeNavbar();
   };
 
   const refreshPage = () => {
-    window.location.reload()
-  }
+    window.location.reload();
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2 fixed-top">
       <div className="container-fluid">
-            <h1 
-              className="fw-bold text-white me-4" 
-              onClick={ refreshPage } 
-              style={{cursor: 'pointer'}}>ClimaApp</h1>
+        <h1
+          className="fw-bold text-white me-4"
+          onClick={refreshPage}
+          style={{ cursor: 'pointer' }}
+        >
+          ClimaApp
+        </h1>
         <ul className="navbar-nav me-auto">
           <li className="nav-item">
-            <NavLink className="nav-link" to="climaapp/" end onClick={closeNavbar}>Home</NavLink>
+            <NavLink className="nav-link" to="climaapp/" end onClick={closeNavbar}>
+              Home
+            </NavLink>
           </li>
         </ul>
         <button
@@ -52,12 +59,10 @@ export const Navbar = () => {
         <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item ms-auto">
-              <span className='nav-link text-info'>{ displayName }</span>
+              <span className="nav-link text-info">{displayName}</span>
             </li>
             <li className="nav-item">
-              <button 
-                className='nav-link btn ms-auto' 
-                onClick={onLogout}>
+              <button className="nav-link btn ms-auto" onClick={onLogout}>
                 Logout
               </button>
             </li>

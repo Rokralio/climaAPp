@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store';
-import { Grid, TextField, Button, Alert, Typography, Container } from '@mui/material';
+import { Grid, TextField, Button, Alert, Typography, Container, InputAdornment } from '@mui/material';
 import './styles.css';
 
 export const LoginPage = () => {
@@ -19,7 +19,7 @@ export const LoginPage = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    dispatch( startLoginWithEmailPassword ({ email, password }) );
+    dispatch(startLoginWithEmailPassword({ email, password }));
   };
 
   const onGoogleSignIn = () => {
@@ -34,87 +34,94 @@ export const LoginPage = () => {
         </Typography>
         <form onSubmit={onSubmit}>
           <Grid container spacing={2}>
-          <Grid item xs={12} className="mb-3">
-            <TextField
-              type="email"
-              className="form-control"
-              id="email"
-              label="Correo"
-              placeholder="correo@gmail.com"
-              name="email"
-              value={email}
-              onChange={onInputChange}
-              fullWidth
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12} className="mb-3">
-            <TextField
-              type="password"
-              className="form-control"
-              id="password"
-              label="Contraseña"
-              placeholder="Ingrese su contraseña"
-              name="password"
-              value={password}
-              onChange={onInputChange}
-              fullWidth
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            {errorMessage && (
-              <Alert severity="error">
-                {errorMessage}
-              </Alert>
-            )}
-          </Grid>
-          <Grid item xs={12} sx={{ marginBottom: '-10px' }}>
-  <Button
-    type="submit"
-    fullWidth
-    variant="contained"
-    color="primary"
-    disabled={isAuthenticated}
-    className="me-3"
-    startIcon={<i className="bi bi-box-arrow-in-right me-2"></i>}
-    sx={{ 
-      boxShadow: 'none',
-      '&:hover': { 
-        boxShadow: 'none'
-      },
-    }}
-  >
-    Iniciar sesión
-  </Button>
-</Grid>
-
-<Grid item xs={12}>
-  <Button
-    fullWidth
-    variant="contained"
-    sx={{ 
-      backgroundColor: '#ffffff', 
-      color: '#DB4437',
-      boxShadow: 'none',
-      border: '1px solid transparent',
-      '&:hover': { 
-        backgroundColor: '#ffffff',
-        border: '1px solid #DB4437',
-        boxShadow: 'none'
-      },
-    }}
-    onClick={onGoogleSignIn}
-    disabled={isAuthenticated}
-    startIcon={<i className="bi bi-google" />}
-  >
-    Iniciar sesión con Google
-  </Button>
-</Grid>
-
-
-
-
+            <Grid item xs={12} className="mb-3">
+              <TextField
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="Correo"
+                name="email"
+                value={email}
+                onChange={onInputChange}
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i className="bi bi-envelope"></i>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} className="mb-3">
+              <TextField
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="Contraseña"
+                name="password"
+                value={password}
+                onChange={onInputChange}
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <i className="bi bi-lock"></i>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {errorMessage && (
+                <Alert severity="error">
+                  {errorMessage}
+                </Alert>
+              )}
+            </Grid>
+            <Grid item xs={12} sx={{ marginBottom: '-10px' }}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                disabled={isAuthenticated}
+                className="me-3"
+                startIcon={<i className="bi bi-box-arrow-in-right me-2"></i>}
+                sx={{ 
+                  boxShadow: 'none',
+                  '&:hover': { 
+                    boxShadow: 'none'
+                  },
+                }}
+              >
+                Iniciar sesión
+              </Button>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{ 
+                  backgroundColor: '#ffffff', 
+                  color: '#DB4437',
+                  boxShadow: 'none',
+                  border: '1px solid transparent',
+                  '&:hover': { 
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #DB4437',
+                    boxShadow: 'none'
+                  },
+                }}
+                onClick={onGoogleSignIn}
+                disabled={isAuthenticated}
+                startIcon={<i className="bi bi-google" />}
+              >
+                Iniciar sesión con Google
+              </Button>
+            </Grid>
           </Grid>
           <Grid container justifyContent="flex-end" className="mt-3">
             <Grid item>
