@@ -1,5 +1,5 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
+import { useState } from "react";
 
 export const CityForm = ({ onFormSubmit, loading, requestCount }) => {
   const [city, setCity] = useState('');
@@ -58,5 +58,5 @@ export const CityForm = ({ onFormSubmit, loading, requestCount }) => {
 CityForm.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  requestCount: PropTypes.number.isRequired, // Añadir esta línea
+  requestCount: PropTypes.number.isRequired
 };

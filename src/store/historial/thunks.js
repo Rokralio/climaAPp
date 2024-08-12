@@ -1,11 +1,11 @@
-import { doc, setDoc, getDoc, Timestamp, deleteDoc, collection, getDocs } from 'firebase/firestore/lite';
+import { doc, setDoc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { FirebaseDB } from '../../firebase/config';
 import { startSaving, savingSuccess, savingFailure, setRequestCount, setHistorialData } from './historialSlice';
 import axios from 'axios';
 
 const REQUEST_LIMIT = 10;
 
-export const convertTimestampToDate = (ciudades) => {
+const convertTimestampToDate = (ciudades) => {
   return ciudades.map((ciudad) => ({
     ...ciudad,
     timestamp: ciudad.timestamp.toDate().toISOString(),
@@ -26,25 +26,22 @@ const fetchCountryName = async (countryCode) => {
   }
 };
 
-export const getRequestCountFromFirestore = (uid) => {
-  return async (dispatch) => {
-    try {
-      const docRef = doc(FirebaseDB, `users/${uid}`);
-      const docSnap = await getDoc(docRef);
-
+export const listenToUserData = (uid) => {
+  return (dispatch) => {
+    const docRef = doc(FirebaseDB, `users/${uid}`);
+    return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         const ciudades = convertTimestampToDate(data.ciudades || []);
         dispatch(setRequestCount(data.requestCount || 0));
         dispatch(setHistorialData(ciudades));
       } else {
-        await setDoc(docRef, { requestCount: 0, ciudades: [] });
         dispatch(setRequestCount(0));
         dispatch(setHistorialData([]));
       }
-    } catch (e) {
-      console.error('Error al obtener el contador de peticiones:', e);
-    }
+    }, (error) => {
+      console.error('Error al escuchar datos del usuario:', error);
+    });
   };
 };
 
@@ -53,129 +50,10 @@ export const updateRequestCountInFirestore = (uid, newCount) => {
     try {
       const docRef = doc(FirebaseDB, `users/${uid}`);
       await setDoc(docRef, { requestCount: newCount }, { merge: true });
+      console.log('Actualizando requestCount en Firestore:', newCount);
       dispatch(setRequestCount(newCount));
     } catch (e) {
       console.error('Error al actualizar el contador de peticiones:', e);
-    }
-  };
-};
-
-export const limpiarDataDeFirestore = (uid) => {
-  return async (dispatch) => {
-    dispatch(startSaving());
-
-    try {
-      // Limpiar la colección `users`
-      const docRef = doc(FirebaseDB, `users/${uid}`);
-      await deleteDoc(docRef);
-
-      // Limpiar la colección `cardData`
-      const cardDataRef = collection(FirebaseDB, 'cardData');
-      const cardDataSnapshot = await getDocs(cardDataRef);
-      const deletePromises = cardDataSnapshot.docs.map(doc => deleteDoc(doc.ref));
-      await Promise.all(deletePromises);
-
-      dispatch(savingSuccess('Colecciones limpiadas con éxito.'));
-    } catch (e) {
-      dispatch(savingFailure('Error al borrar colecciones: ' + e.message));
-    }
-  };
-};
-
-
-export const fetchHistorialData = (uid) => {
-  return async (dispatch) => {
-    try {
-      const docRef = doc(FirebaseDB, `users/${uid}`);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const ciudades = convertTimestampToDate(data.ciudades || []);
-        dispatch(setHistorialData(ciudades));
-      } else {
-        dispatch(setHistorialData([]));
-      }
-    } catch (e) {
-      console.error('Error al obtener historial:', e);
-    }
-  };
-};
-
-const saveCardDataToFirestore = async (city, cardData) => {
-  try {
-    const cleanCity = city.replace(/\s+/g, ' ').trim();
-    const cardDataRef = doc(FirebaseDB, 'cardData', cleanCity);
-    await setDoc(cardDataRef, cardData);
-  } catch (error) {
-    console.error('Error al guardar los datos de la tarjeta en la colección global:', error);
-  }
-};
-
-export const saveCityToFirestore = (city, countryCode, climaData) => {
-  return async (dispatch, getState) => {
-    const { uid } = getState().auth;
-    const { requestCount } = getState().historial;
-
-    if (requestCount >= REQUEST_LIMIT) {
-      dispatch(savingFailure('Has alcanzado el límite de 10 peticiones.'));
-      return;
-    }
-
-    const cleanCity = city.replace(/\s+/g, ' ').trim();
-    const countryName = await fetchCountryName(countryCode);
-    const registerCity = { 
-      city: cleanCity, 
-      country: countryName,
-      timestamp: new Date().toISOString(),
-      climaData: climaData // Guardamos el climaData aquí
-    };
-
-    dispatch(startSaving());
-
-    try {
-      const docRef = doc(FirebaseDB, `users/${uid}`);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const ciudades = data.ciudades || [];
-        const ciudadExiste = ciudades.some(ciudad => ciudad.city.toLowerCase() === cleanCity.toLowerCase());
-        if (ciudadExiste) {
-          dispatch(savingFailure('La ciudad ya está en el historial.'));
-          return;
-        }
-
-        const nuevasCiudades = [
-          ...ciudades,
-          convertDateToTimestamp(registerCity)
-        ];
-        
-        await setDoc(docRef, { 
-          requestCount: requestCount + 1, 
-          ciudades: nuevasCiudades 
-        }, { merge: true });
-
-        dispatch(updateRequestCountInFirestore(uid, requestCount + 1));
-        dispatch(savingSuccess('Ciudad guardada con éxito.'));
-      } else {
-        await setDoc(docRef, { 
-          requestCount: 1, 
-          ciudades: [convertDateToTimestamp(registerCity)] 
-        });
-        dispatch(updateRequestCountInFirestore(uid, 1));
-        dispatch(savingSuccess('Ciudad guardada con éxito.'));
-      }
-
-      // Guardar los datos completos de la tarjeta en la colección global
-      await saveCardDataToFirestore(cleanCity, {
-        city: cleanCity,
-        country: countryName,
-        climaData,
-        timestamp: new Date().toISOString()
-      });
-    } catch (e) {
-      dispatch(savingFailure('Error al guardar la ciudad: ' + e.message));
     }
   };
 };
@@ -201,115 +79,136 @@ export const getCityData = (city) => {
       return;
     }
 
-    // Primero, intentamos obtener los datos de la colección `users`
     const userCityData = await fetchFromUserCollection(city, uid);
 
     if (userCityData) {
       dispatch(savingSuccess('Datos obtenidos de la colección `users`.'));
-
-      // También, actualizamos la colección `cardData` si no hay datos
-      const cardData = await fetchFromCardData(city);
-      if (!cardData) {
-        await saveCardDataToFirestore(city, userCityData);
-      }
-
-      // Actualiza la colección `users` con los datos de `cardData`
-      if (uid) {
-        dispatch(saveCityToFirestore(city, userCityData.climaData.sys.country, userCityData.climaData));
-      }
-
       return userCityData;
     } else {
-      const cardData = await fetchFromCardData(city);
+      const weatherData = await fetchWeatherFromAPI(city);
+      const countryName = await fetchCountryName(weatherData.sys.country);
+      const cleanCity = city.replace(/\s+/g, ' ').trim();
+      const relevantData = {
+        temp: weatherData.main.temp,
+        feels_like: weatherData.main.feels_like,
+        temp_min: weatherData.main.temp_min,
+        temp_max: weatherData.main.temp_max,
+        description: weatherData.weather?.[0]?.description
+      };
+      const newCardData = {
+        city: cleanCity,
+        country: countryName,
+        climaData: weatherData,
+        timestamp: new Date().toISOString()
+      };
 
-      if (cardData) {
-        dispatch(savingSuccess('Datos obtenidos de cardData.'));
-
-        // Asegurarnos de que los datos también se guarden en la colección `users` si el usuario está autenticado
-        if (uid) {
-          dispatch(saveCityToFirestore(city, cardData.climaData.sys.country, cardData.climaData));
-        }
-
-        return cardData;
-      } else {
-        // Si no encontramos los datos en cardData, hacemos la solicitud a la API
-        const weatherData = await fetchWeatherFromAPI(city);
-        const countryName = await fetchCountryName(weatherData.sys.country);
-        const cleanCity = city.replace(/\s+/g, ' ').trim();
-        const newCardData = {
-          city: cleanCity,
-          country: countryName,
-          climaData: weatherData,
-          timestamp: new Date().toISOString()
-        };
-
-        // Guardamos los datos en cardData
-        await saveCardDataToFirestore(cleanCity, newCardData);
-
-        // También guardamos en el historial si es necesario
-        if (uid) {
-          dispatch(saveCityToFirestore(cleanCity, weatherData.sys.country, weatherData));
-        }
-
-        dispatch(savingSuccess('Datos obtenidos de la API y guardados en cardData.'));
-        return newCardData;
+      if (uid) {
+        await dispatch(saveCityToFirestore(cleanCity, weatherData.sys.country, relevantData));
       }
+
+      dispatch(savingSuccess('Datos obtenidos de la API y guardados en Firestore.'));
+      return newCardData;
     }
   };
 };
 
-const fetchFromUserCollection = async (city, uid) => {
-  try {
+const fetchFromUserCollection = (city, uid) => {
+  return new Promise((resolve, reject) => {
     const docRef = doc(FirebaseDB, `users/${uid}`);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      const ciudades = data.ciudades || [];
-      const cityData = ciudades.find(ciudad => ciudad.city.toLowerCase() === city.toLowerCase());
-      if (cityData) {
-        return {
-          city: cityData.city,
-          country: cityData.country,
-          climaData: cityData.climaData
-        };
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const ciudades = data.ciudades || [];
+        const cityData = ciudades.find(ciudad => ciudad.city.toLowerCase() === city.toLowerCase());
+        if (cityData) {
+          resolve({
+            city: cityData.city,
+            country: cityData.country,
+            climaData: cityData.climaData
+          });
+        } else {
+          resolve(null);
+        }
+      } else {
+        resolve(null);
       }
-    }
-    return null;
-  } catch (error) {
-    console.error('Error al obtener datos del usuario:', error);
-    return null;
-  }
+    }, (error) => {
+      console.error('Error al obtener datos del usuario:', error);
+      reject(error);
+    });
+
+    return unsubscribe;
+  });
 };
 
-const fetchFromCardData = async (city) => {
-  try {
+export const saveCityToFirestore = (city, countryCode, climaData) => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    const { requestCount } = getState().historial;
+
+    if (requestCount >= REQUEST_LIMIT) {
+      dispatch(savingFailure('Has alcanzado el límite de 10 peticiones.'));
+      return;
+    }
+
     const cleanCity = city.replace(/\s+/g, ' ').trim();
-    const docRef = doc(FirebaseDB, 'cardData', cleanCity);
-    const docSnap = await getDoc(docRef);
+    const countryName = await fetchCountryName(countryCode);
+    const registerCity = { 
+      city: cleanCity, 
+      country: countryName,
+      timestamp: new Date().toISOString(),
+      climaData: climaData
+    };
 
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      return {
-        city: data.city,
-        country: data.country,
-        climaData: data.climaData
-      };
-    }
-    return null;
-  } catch (error) {
-    console.error('Error al obtener datos de cardData:', error);
-    return null;
-  }
-};
+    dispatch(startSaving());
 
-export const clearUserDataOnLogout = (uid) => {
-  return async () => {
     try {
       const docRef = doc(FirebaseDB, `users/${uid}`);
-      await deleteDoc(docRef);
-    } catch (error) {
-      console.error('Error al limpiar los datos del usuario al hacer logout:', error);
+      const unsubscribe = onSnapshot(docRef, async (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          let ciudades = data.ciudades || [];
+          const ciudadExiste = ciudades.find(ciudad => ciudad.city.toLowerCase() === cleanCity.toLowerCase());
+          
+          if (ciudadExiste) {
+            const now = new Date();
+            const lastUpdate = new Date(ciudadExiste.timestamp);
+
+            if ((now - lastUpdate) < 3600000) {
+              return;
+            } else {
+              ciudades = ciudades.map(ciudad => 
+                ciudad.city.toLowerCase() === cleanCity.toLowerCase() ? 
+                convertDateToTimestamp(registerCity) : 
+                ciudad
+              );
+            }
+          } else {
+            ciudades.push(convertDateToTimestamp(registerCity));
+          }
+
+          await setDoc(docRef, { 
+            requestCount: requestCount + 1, 
+            ciudades 
+          }, { merge: true });
+
+          dispatch(updateRequestCountInFirestore(uid, requestCount + 1));
+          dispatch(savingSuccess('Ciudad guardada con éxito.'));
+        } else {
+          await setDoc(docRef, { 
+            requestCount: 1, 
+            ciudades: [convertDateToTimestamp(registerCity)] 
+          });
+          dispatch(updateRequestCountInFirestore(uid, 1));
+          dispatch(savingSuccess('Ciudad guardada con éxito.'));
+        }
+
+        unsubscribe(); // Asegúrate de llamar a unsubscribe cuando sea necesario
+      }, (error) => {
+        dispatch(savingFailure('Error al guardar la ciudad: ' + error.message));
+      });
+    } catch (e) {
+      dispatch(savingFailure('Error al guardar la ciudad: ' + e.message));
     }
   };
 };

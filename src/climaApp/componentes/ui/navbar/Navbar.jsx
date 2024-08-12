@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { startLogout } from '../../../../store';
-import { clearUserDataOnLogout } from '../../../../store/historial/thunks';
+
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 
 export const Navbar = () => {
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const { displayName, uid } = useSelector((state) => state.auth);
+  const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleToggle = () => {
@@ -18,9 +18,7 @@ export const Navbar = () => {
   };
 
   const onLogout = () => {
-    if (uid) {
-      dispatch(clearUserDataOnLogout(uid));
-    }
+
     dispatch(startLogout());
     closeNavbar();
   };
