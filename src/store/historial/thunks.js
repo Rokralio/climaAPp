@@ -174,7 +174,7 @@ export const saveCityToFirestore = (city, countryCode, climaData) => {
             const now = new Date();
             const lastUpdate = new Date(ciudadExiste.timestamp);
 
-            if ((now - lastUpdate) < 3600000) {
+            if ((now - lastUpdate) < 600000) {
               return;
             } else {
               ciudades = ciudades.map(ciudad => 
@@ -203,7 +203,7 @@ export const saveCityToFirestore = (city, countryCode, climaData) => {
           dispatch(savingSuccess('Ciudad guardada con éxito.'));
         }
 
-        unsubscribe(); // Asegúrate de llamar a unsubscribe cuando sea necesario
+        unsubscribe();
       }, (error) => {
         dispatch(savingFailure('Error al guardar la ciudad: ' + error.message));
       });
