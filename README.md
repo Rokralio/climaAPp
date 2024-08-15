@@ -10,7 +10,6 @@ Este proyecto de React creato con Vite para obtener el clima de una ciudad.
 | Bootstrap        | ^5.3.3   |
 | gh-pages         | ^6.1.1   |
 | firebase         | ^9.8.1   |
-| mui/material     | ^5.16.0  |
 | emotion/react    | ^11.11.4 |
 | emotion/styled   | ^11.11.5 |
 | react-redux      | ^^9.1.2  |
