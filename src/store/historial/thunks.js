@@ -50,7 +50,6 @@ export const updateRequestCountInFirestore = (uid, newCount) => {
     try {
       const docRef = doc(FirebaseDB, `users/${uid}`);
       await setDoc(docRef, { requestCount: newCount }, { merge: true });
-      console.log('Actualizando requestCount en Firestore:', newCount);
       dispatch(setRequestCount(newCount));
     } catch (e) {
       console.error('Error al actualizar el contador de peticiones:', e);

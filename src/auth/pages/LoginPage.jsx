@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store';
-import './styles.css';
+import { Box, Button, Container, Grid, TextField, Typography, Alert } from '@mui/material';
+import './styles.css'
 
 export const LoginPage = () => {
   const { status, errorMessage } = useSelector(state => state.auth);
@@ -26,81 +27,80 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="login-background d-flex justify-content-center align-items-center">
-      <div className="login-container container">
-        <h1 className="mb-4 text-center">Iniciar sesión</h1>
+    <Box className="login-background" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Container maxWidth="sm" sx={{ bgcolor: 'rgba(211, 211, 211, 0.9)', p: 3, borderRadius: 2 }}>
+        <Typography variant="h4" align="center" gutterBottom>Iniciar sesión</Typography>
         <form onSubmit={onSubmit}>
-          <div className="row">
-            <div className="col-12 mb-3">
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-envelope"></i>
-                </span>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  placeholder="Correo"
-                  name="email"
-                  value={email}
-                  onChange={onInputChange}
-                />
-              </div>
-            </div>
-            <div className="col-12 mb-3">
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-lock"></i>
-                </span>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Contraseña"
-                  name="password"
-                  value={password}
-                  onChange={onInputChange}
-                />
-              </div>
-            </div>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                placeholder="Correo"
+                name="email"
+                value={email}
+                onChange={onInputChange}
+                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
+                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                placeholder="Contraseña"
+                name="password"
+                type="password"
+                value={password}
+                onChange={onInputChange}
+                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
+                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
+              />
+            </Grid>
             {errorMessage && (
-              <div className="col-12 mb-3">
-                <div className="alert alert-danger">
-                  {errorMessage}
-                </div>
-              </div>
+              <Grid item xs={12}>
+                <Alert severity="error">{errorMessage}</Alert>
+              </Grid>
             )}
-            <div className="col-12 mb-3">
-              <button
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
                 type="submit"
-                className="btn btn-primary w-100"
                 disabled={isAuthenticated}
+                startIcon={<i className="bi bi-box-arrow-in-right"></i>}
               >
-                <i className="bi bi-box-arrow-in-right me-2"></i>
                 Iniciar sesión
-              </button>
-            </div>
-            <div className="col-12 mb-3">
-              <button
-                className="btn btn-light w-100 text-danger"
-                onClick={onGoogleSignIn}
-                disabled={isAuthenticated}
-              >
-                <i className="bi bi-google me-2"></i>
-                Iniciar sesión con Google
-              </button>
-            </div>
-          </div>
-          <div className="row justify-content-end mt-3">
-            <div className="col-auto">
-              <span>¿No tienes una cuenta? </span>
-              <Link to="/climaapp/register">
-                Regístrate
-              </Link>
-            </div>
-          </div>
+              </Button>
+            </Grid>
+<Grid item xs={12}>
+  <Button
+    sx={{
+      backgroundColor: 'white',
+      borderRadius: 0,
+      '&:hover': {
+        backgroundColor: '#f0f0f0', // Gris claro en hover
+      }
+    }}
+    fullWidth
+    variant="outlined"
+    color="error"
+    onClick={onGoogleSignIn}
+    disabled={isAuthenticated}
+    startIcon={<i className="bi bi-google"></i>}
+  >
+    Iniciar sesión con Google
+  </Button>
+</Grid>
+          </Grid>
+          <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
+            <Grid item>
+              <Typography variant="body2">
+                ¿No tienes una cuenta? <Link to="/climaapp/register">Regístrate</Link>
+              </Typography>
+            </Grid>
+          </Grid>
         </form>
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };

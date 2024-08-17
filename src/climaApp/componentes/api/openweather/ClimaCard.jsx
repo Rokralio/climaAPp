@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Card, CardContent, Typography, Table, TableBody, TableCell, TableContainer, TableRow, Switch, Box } from '@mui/material';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -37,50 +38,49 @@ export const ClimaCard = ({ data }) => {
   };
 
   return (
-    <div className='p-2 px-3' style={{ backgroundColor: 'rgba(225, 225, 225, 0.98)' }}>
-      <div className="d-flex justify-content-between align-items-center w-100">
-        <h2>{data.city}</h2>
-        <div className="switch-container">
-          <label className="switch">
-            <input type="checkbox" onChange={toggleUnidad} className="switch-input"/>
-            <span className="slider round">
-              <span className="slider-label">°F</span>
-              <span className="slider-label pd-3">°C</span>
-              <span className="slider-indicator"></span>
-            </span>
-          </label>
+    <Card sx={{ width: '100%', backgroundColor: 'rgba(225, 225, 225, 0.98)', marginBottom: 2 }}>
+      <CardContent>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="h5">{data.city}</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Switch checked={unidad === 'F'} onChange={toggleUnidad} color="primary" sx={{ marginLeft: 1 }} />
+            <Typography variant="body1">{unidad === 'C' ? '°C' : '°F'}</Typography>
+          </Box>
         </div>
-
-      </div>
-      <table className="table table-striped-columns">
-        <tbody>
-          <tr>
-            <td className="colTd">País:</td>
-            <td className="colData">{data.country}</td>
-          </tr>
-          <tr>
-            <td className="colTd">Tipo de clima:</td>
-            <td className="colData">{capitalizeFirstLetter(data.climaData.description || 'N/A')}</td>
-          </tr>
-          <tr>
-            <td className="colTd">Temperatura:</td>
-            <td className="colData">{mostrarTemperatura()}</td>
-          </tr>
-          <tr>
-            <td className="colTd">Sensación térmica:</td>
-            <td className="colData">{mostrarSensacionTermica()}</td>
-          </tr>
-          <tr>
-            <td className="colTd">Temperatura mínima:</td>
-            <td className="colData">{mostrarTemperaturaMinima()}</td>
-          </tr>
-          <tr>
-            <td className="colTd">Temperatura máxima:</td>
-            <td className="colData">{mostrarTemperaturaMaxima()}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <TableContainer>
+          <Table sx={{ minWidth: 300 }} aria-label="simple table">
+            <TableBody>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: 'white' }}>País:</TableCell>
+                <TableCell sx={{ backgroundColor: 'rgba(230, 230, 230)' }} align="center">{data.country}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: 'white' }}>Tipo de clima:</TableCell>
+                <TableCell sx={{ backgroundColor: 'rgba(230, 230, 230)' }} align="center">
+                  {capitalizeFirstLetter(data.climaData.description || 'N/A')}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: 'white' }}>Temperatura:</TableCell>
+                <TableCell sx={{ backgroundColor: 'rgba(230, 230, 230)' }} align="center">{mostrarTemperatura()}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: 'white' }}>Sensación térmica:</TableCell>
+                <TableCell sx={{ backgroundColor: 'rgba(230, 230, 230)' }} align="center">{mostrarSensacionTermica()}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: 'white' }}>Temperatura mínima:</TableCell>
+                <TableCell sx={{ backgroundColor: 'rgba(230, 230, 230)' }} align="center">{mostrarTemperaturaMinima()}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ backgroundColor: 'white' }}>Temperatura máxima:</TableCell>
+                <TableCell sx={{ backgroundColor: 'rgba(230, 230, 230)' }} align="center">{mostrarTemperaturaMaxima()}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </Card>
   );
 };
 
