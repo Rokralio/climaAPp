@@ -2,19 +2,6 @@
 
 Este proyecto de React creato con Vite para obtener el clima de una ciudad.
 
-## Dependencias
-
-| Dependencia | Versión |
-|-------------|---------|
-| Axios            | ^1.7.2   |
-| Bootstrap        | ^5.3.3   |
-| gh-pages         | ^6.1.1   |
-| firebase         | ^9.8.1   |
-| emotion/react    | ^11.11.4 |
-| emotion/styled   | ^11.11.5 |
-| react-redux      | ^^9.1.2  |
-| react-router-dom |     6    |
-
 ## API
 
 | API            | URL                                       |

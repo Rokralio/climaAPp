@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks';
 import { startCreatingUserWithEmaiPassword } from '../../store';
+import { Box, Button, Container, Grid, TextField, Typography, Alert } from '@mui/material';
 import './styles.css';
 
 const formData = {
@@ -33,95 +34,79 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="login-background d-flex justify-content-center align-items-center">
-      <div className="login-container container">
-        <h1 className="mb-4 text-center">Registro</h1>
+    <Box className="login-background" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Container maxWidth="sm" sx={{ bgcolor: 'rgba(211, 211, 211, 0.9)', p: 3, borderRadius: 2 }}>
+        <Typography variant="h4" align="center" gutterBottom>Registro</Typography>
         <form onSubmit={onSubmit}>
-          <div className="row">
-            <div className="col-12 mb-3">
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-person"></i>
-                </span>
-                <input
-                  type="text"
-                  className={`form-control ${!!displayNameValid && formSubmitted ? 'is-invalid' : ''}`}
-                  id="fullname"
-                  placeholder="Nombre Completo"
-                  name="displayName"
-                  value={displayName}
-                  onChange={onInputChange}
-                />
-                {formSubmitted && displayNameValid && (
-                  <div className="invalid-feedback">{displayNameValid}</div>
-                )}
-              </div>
-            </div>
-            <div className="col-12 mb-3">
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-envelope"></i>
-                </span>
-                <input
-                  type="email"
-                  className={`form-control ${!!emailValid && formSubmitted ? 'is-invalid' : ''}`}
-                  id="email"
-                  placeholder="Correo"
-                  name="email"
-                  value={email}
-                  onChange={onInputChange}
-                />
-                {formSubmitted && emailValid && (
-                  <div className="invalid-feedback">{emailValid}</div>
-                )}
-              </div>
-            </div>
-            <div className="col-12 mb-3">
-              <div className="input-group">
-                <span className="input-group-text">
-                  <i className="bi bi-lock"></i>
-                </span>
-                <input
-                  type="password"
-                  className={`form-control ${!!passwordValid && formSubmitted ? 'is-invalid' : ''}`}
-                  id="password"
-                  placeholder="Contraseña"
-                  name="password"
-                  value={password}
-                  onChange={onInputChange}
-                />
-                {formSubmitted && passwordValid && (
-                  <div className="invalid-feedback">{passwordValid}</div>
-                )}
-              </div>
-            </div>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                placeholder="Nombre Completo"
+                name="displayName"
+                value={displayName}
+                onChange={onInputChange}
+                error={!!displayNameValid && formSubmitted}
+                helperText={formSubmitted && displayNameValid}
+                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
+                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                placeholder="Correo"
+                type="email"
+                name="email"
+                value={email}
+                onChange={onInputChange}
+                error={!!emailValid && formSubmitted}
+                helperText={formSubmitted && emailValid}
+                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
+                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                placeholder="Contraseña"
+                type="password"
+                name="password"
+                value={password}
+                onChange={onInputChange}
+                error={!!passwordValid && formSubmitted}
+                helperText={formSubmitted && passwordValid}
+                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
+                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
+              />
+            </Grid>
             {errorMessage && (
-              <div className="col-12 mb-3">
-                <div className="alert alert-danger">
-                  {errorMessage}
-                </div>
-              </div>
+              <Grid item xs={12}>
+                <Alert severity="error">{errorMessage}</Alert>
+              </Grid>
             )}
-            <div className="col-12 mb-3">
-              <button
-                disabled={isCheckingAuthentication}
+            <Grid item xs={12}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
                 type="submit"
-                className="btn btn-primary w-100"
+                disabled={isCheckingAuthentication}
+                startIcon={<i className="bi bi-box-arrow-in-right"></i>}
               >
-                <i className="bi bi-box-arrow-in-right me-2"></i>
                 Registrar
-              </button>
-            </div>
-          </div>
-          <div className="row justify-content-end mt-3">
-            <div className="col-auto">
-              <Link to="/climaapp/login">
-                ¿Ya tienes cuenta?
-              </Link>
-            </div>
-          </div>
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
+            <Grid item>
+              <Typography variant="body2">
+                ¿Ya tienes cuenta? <Link to="/climaapp/login">Iniciar sesión</Link>
+              </Typography>
+            </Grid>
+          </Grid>
         </form>
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };

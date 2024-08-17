@@ -4,6 +4,7 @@ import { CityForm } from '../../../componentes';
 import { getCityData, listenToUserData } from "../../../../store/historial/thunks";
 import { ClimaCard } from "./ClimaCard";
 import PropTypes from "prop-types";
+import { Box, Alert } from '@mui/material';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -15,7 +16,6 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state) => state.auth);
   const historialData = useSelector((state) => state.historial.data);
-
   const { requestCount } = useSelector((state) => state.historial);
 
   useEffect(() => {
@@ -54,23 +54,23 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   };
 
   return (
-    <div className="cuadro-main d-flex">
-      <div className="content-container">
+    <Box className="cuadro-main" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+      <Box className="content-container">
         <CityForm onFormSubmit={envForm} loading={cargando} requestCount={requestCount} />
         {error && (
-          <p className="h5 text-center text-danger p-2 px-3 mt-1" style={{ backgroundColor: 'rgba(238, 237, 237, 0.98)', maxWidth: '100%', overflowWrap: 'break-word' }}>
+          <Alert severity="error" sx={{ marginTop: 2 }}>
             {error}
-          </p>
+          </Alert>
         )}
         {historialData && historialData.length > 0 && (
-          <div className='historial-container mt-2'>
+          <Box mt={2} display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr', md: 'repeat(2, 1fr)' }} gap={2}>
             {historialData.map((data, i) => (
               <ClimaCard key={i} data={data} />
             ))}
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

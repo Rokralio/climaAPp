@@ -1,26 +1,26 @@
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Box } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { startLogout } from '../../../../store';
 
-import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
-
 export const Navbar = () => {
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const handleToggle = () => {
-    setIsNavbarOpen(!isNavbarOpen);
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const closeNavbar = () => {
-    setIsNavbarOpen(false);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const onLogout = () => {
-
     dispatch(startLogout());
-    closeNavbar();
+    handleMenuClose();
   };
 
   const refreshPage = () => {
@@ -28,45 +28,45 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2 fixed-top">
-      <div className="container-fluid">
-        <h1
-          className="fw-bold text-white me-4"
-          onClick={refreshPage}
-          style={{ cursor: 'pointer' }}
+    <AppBar position="fixed" sx={{ backgroundColor: '#000000' }}>
+      <Toolbar>
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+          <Typography
+            variant="h1"
+            component="div"
+            sx={{ fontWeight: 'bold', fontSize: '1.5rem', cursor: 'pointer' }}
+            onClick={refreshPage}
+          >
+            ClimaApp
+          </Typography>
+          <Typography
+            component={NavLink}
+            to="climaapp/"
+            sx={{ marginLeft: 2, fontSize: '1rem', color: 'inherit', textDecoration: 'none' }}
+            onClick={handleMenuClose}
+          >
+            Home
+          </Typography>
+        </Box>
+        <Typography variant="subtitle1" sx={{ marginLeft: 'auto', marginRight: 2 }}>
+          {displayName}
+        </Typography>
+        <IconButton
+          edge="end"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMenuOpen}
         >
-          ClimaApp
-        </h1>
-        <ul className="navbar-nav me-auto">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="climaapp/" end onClick={closeNavbar}>
-              Home
-            </NavLink>
-          </li>
-        </ul>
-        <button
-          className="navbar-toggler ms-auto"
-          type="button"
-          onClick={handleToggle}
-          aria-controls="navbarNav"
-          aria-expanded={isNavbarOpen}
-          aria-label="Toggle navigation"
+          <MenuIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
         >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className={`collapse navbar-collapse ${isNavbarOpen ? 'show' : ''}`} id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item ms-auto">
-              <span className="nav-link text-info">{displayName}</span>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link btn ms-auto" onClick={onLogout}>
-                Logout
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+          <MenuItem onClick={onLogout}>Logout</MenuItem>
+        </Menu>
+      </Toolbar>
+    </AppBar>
   );
 };
