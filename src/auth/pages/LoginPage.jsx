@@ -72,25 +72,25 @@ export const LoginPage = () => {
                 Iniciar sesión
               </Button>
             </Grid>
-<Grid item xs={12}>
-  <Button
-    sx={{
-      backgroundColor: 'white',
-      borderRadius: 0,
-      '&:hover': {
-        backgroundColor: '#f0f0f0', // Gris claro en hover
-      }
-    }}
-    fullWidth
-    variant="outlined"
-    color="error"
-    onClick={onGoogleSignIn}
-    disabled={isAuthenticated}
-    startIcon={<i className="bi bi-google"></i>}
-  >
-    Iniciar sesión con Google
-  </Button>
-</Grid>
+            <Grid item xs={12}>
+              <Button
+                sx={{
+                  backgroundColor: 'white',
+                  borderRadius: 0,
+                  '&:hover': {
+                    backgroundColor: '#f0f0f0', // Gris claro en hover
+                  }
+                }}
+                fullWidth
+                variant="outlined"
+                color="error"
+                onClick={onGoogleSignIn}
+                disabled={isAuthenticated}
+                startIcon={<i className="bi bi-google"></i>}
+              >
+                Iniciar sesión con Google
+              </Button>
+            </Grid>
           </Grid>
           <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
             <Grid item>
