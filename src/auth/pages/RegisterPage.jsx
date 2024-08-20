@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from '../../hooks';
 import { startCreatingUserWithEmaiPassword } from '../../store';
-import { Box, Button, Container, Grid, TextField, Typography, Alert } from '@mui/material';
 import './styles.css';
 
 const formData = {
@@ -34,79 +33,126 @@ export const RegisterPage = () => {
   };
 
   return (
-    <Box className="login-background" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-      <Container maxWidth="sm" sx={{ bgcolor: 'rgba(211, 211, 211, 0.9)', p: 3, borderRadius: 2 }}>
-        <Typography variant="h4" align="center" gutterBottom>Registro</Typography>
-        <form onSubmit={onSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                placeholder="Nombre Completo"
-                name="displayName"
-                value={displayName}
-                onChange={onInputChange}
-                error={!!displayNameValid && formSubmitted}
-                helperText={formSubmitted && displayNameValid}
-                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
-                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                placeholder="Correo"
-                type="email"
-                name="email"
-                value={email}
-                onChange={onInputChange}
-                error={!!emailValid && formSubmitted}
-                helperText={formSubmitted && emailValid}
-                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
-                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                placeholder="Contraseña"
-                type="password"
-                name="password"
-                value={password}
-                onChange={onInputChange}
-                error={!!passwordValid && formSubmitted}
-                helperText={formSubmitted && passwordValid}
-                InputProps={{ classes: { root: 'textFieldRoot', input: 'textFieldInput' } }}
-                InputLabelProps={{ classes: { root: 'textFieldLabel' } }}
-              />
-            </Grid>
+    <div className="login-background">
+      <div 
+        className="container is-flex is-justify-content-center is-align-items-center" 
+        style={{ minHeight: '100vh' }}
+      >
+        <div 
+          className="box" 
+          style={{ 
+            backgroundColor: 'rgba(211, 211, 211, 0.95)', 
+            padding: '1.5rem',  
+            borderRadius: '8px',
+            width: '500px', 
+            maxWidth: '90%', 
+          }}
+        >
+          <h1 className="title has-text-black has-text-centered">Registro</h1>
+          <form onSubmit={onSubmit}>
+            <div className="field" style={{ marginBottom: '1rem', marginTop: '1rem' }}>
+              <div className="control">
+                <input
+                  className={`input is-medium ${formSubmitted && displayNameValid ? 'is-danger' : ''}`}
+                  type="text"
+                  placeholder="Nombre Completo"
+                  name="displayName"
+                  value={displayName}
+                  onChange={onInputChange}
+                  style={{ 
+                    backgroundColor: 'white', 
+                    border: 'none', 
+                    borderRadius: '0px',
+                    color: 'black',
+                    fontSize: '1rem',
+                    padding: '0.75rem 1.25rem',
+                  }}
+                  onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(0, 123, 255, 0.5)'}
+                  onBlur={(e) => e.target.style.boxShadow = 'none'}
+                />
+              </div>
+              {formSubmitted && displayNameValid && <p className="help is-danger">{displayNameValid}</p>}
+            </div>
+
+            <div className="field" style={{ marginBottom: '1rem' }}>
+              <div className="control">
+                <input
+                  className={`input is-medium ${formSubmitted && emailValid ? 'is-danger' : ''}`}
+                  type="email"
+                  placeholder="Correo"
+                  name="email"
+                  value={email}
+                  onChange={onInputChange}
+                  style={{ 
+                    backgroundColor: 'white', 
+                    border: 'none', 
+                    borderRadius: '0px',
+                    color: 'black',
+                    fontSize: '1rem',
+                    padding: '0.75rem 1.25rem',
+                  }}
+                  onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(0, 123, 255, 0.5)'}
+                  onBlur={(e) => e.target.style.boxShadow = 'none'}
+                />
+              </div>
+              {formSubmitted && emailValid && <p className="help is-danger">{emailValid}</p>}
+            </div>
+
+            <div className="field" style={{ marginBottom: '1.5rem' }}>
+              <div className="control">
+                <input
+                  className={`input is-medium ${formSubmitted && passwordValid ? 'is-danger' : ''}`}
+                  type="password"
+                  placeholder="Contraseña"
+                  name="password"
+                  value={password}
+                  onChange={onInputChange}
+                  style={{ 
+                    backgroundColor: 'white', 
+                    border: 'none', 
+                    borderRadius: '0px',
+                    color: 'black',
+                    fontSize: '1rem',
+                    padding: '0.75rem 1.25rem',
+                  }}
+                  onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(0, 123, 255, 0.5)'}
+                  onBlur={(e) => e.target.style.boxShadow = 'none'}
+                />
+              </div>
+              {formSubmitted && passwordValid && <p className="help is-danger">{passwordValid}</p>}
+            </div>
+
             {errorMessage && (
-              <Grid item xs={12}>
-                <Alert severity="error">{errorMessage}</Alert>
-              </Grid>
+              <div className="notification is-danger" style={{ marginBottom: '1.5rem' }}>
+                {errorMessage}
+              </div>
             )}
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                type="submit"
-                disabled={isCheckingAuthentication}
-                startIcon={<i className="bi bi-box-arrow-in-right"></i>}
-              >
-                Registrar
-              </Button>
-            </Grid>
-          </Grid>
-          <Grid container justifyContent="flex-end" sx={{ mt: 2 }}>
-            <Grid item>
-              <Typography variant="body2">
-                ¿Ya tienes cuenta? <Link to="/climaapp/login">Iniciar sesión</Link>
-              </Typography>
-            </Grid>
-          </Grid>
-        </form>
-      </Container>
-    </Box>
+
+            <div className="field" style={{ marginTop: '1rem' }}>
+              <div className="control">
+                <button
+                  className="button is-fullwidth is-medium"
+                  type="submit"
+                  disabled={isCheckingAuthentication}
+                  style={{
+                    backgroundColor: '#007bff', 
+                    border: 'none',
+                    borderRadius: '0px', 
+                    padding: '0.4rem 0.4rem',
+                  }}
+                >
+                  Registrar
+                </button>
+              </div>
+            </div>
+          </form>
+          <div className="field mt-3">
+            <p className="has-text-centered">
+              ¿Ya tienes cuenta? <Link to="/climaapp/login">Iniciar sesión</Link>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

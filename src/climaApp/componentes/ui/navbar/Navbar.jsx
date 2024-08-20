@@ -1,26 +1,20 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Box } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
 import { startLogout } from '../../../../store';
 
 export const Navbar = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [isActive, setIsActive] = useState(false);
   const { displayName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleMenuToggle = () => {
+    setIsActive(!isActive);
   };
 
   const onLogout = () => {
     dispatch(startLogout());
-    handleMenuClose();
+    setIsActive(false);
   };
 
   const refreshPage = () => {
@@ -28,45 +22,40 @@ export const Navbar = () => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: '#000000' }}>
-      <Toolbar>
-        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <Typography
-            variant="h1"
-            component="div"
-            sx={{ fontWeight: 'bold', fontSize: '1.5rem', cursor: 'pointer' }}
-            onClick={refreshPage}
-          >
-            ClimaApp
-          </Typography>
-          <Typography
-            component={NavLink}
-            to="climaapp/"
-            sx={{ marginLeft: 2, fontSize: '1rem', color: 'inherit', textDecoration: 'none' }}
-            onClick={handleMenuClose}
-          >
-            Home
-          </Typography>
-        </Box>
-        <Typography variant="subtitle1" sx={{ marginLeft: 'auto', marginRight: 2 }}>
-          {displayName}
-        </Typography>
-        <IconButton
-          edge="end"
-          color="inherit"
+    <nav className="navbar is-fixed-top has-background-black">
+      <div className="navbar-brand">
+        <a className="navbar-item has-text-weight-bold is-size-4" onClick={refreshPage}>
+          ClimaApp
+        </a>
+        <NavLink to="climaapp/" className="navbar-item" onClick={() => setIsActive(false)}>
+          Home
+        </NavLink>
+        <a
+          role="button"
+          className={`navbar-burger ${isActive ? 'is-active' : ''}`}
           aria-label="menu"
-          onClick={handleMenuOpen}
+          aria-expanded={isActive}
+          onClick={handleMenuToggle}
         >
-          <MenuIcon />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={onLogout}>Logout</MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div className={`navbar-menu ${isActive ? 'is-active' : ''}`}>
+        <div className="navbar-end">
+          <div className="navbar-item">
+            <span>{displayName}</span>
+          </div>
+          <div className="navbar-item">
+            <button className="button is-light" onClick={onLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };

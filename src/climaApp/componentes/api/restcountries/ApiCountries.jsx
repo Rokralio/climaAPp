@@ -26,7 +26,7 @@ export const ApiCountries = ({ countryCode }) => {
   return (
     <>
       {countryName && (
-            <td className="colData">{countryName}</td>
+            <td>{countryName}</td>
       )}
     </>
   );

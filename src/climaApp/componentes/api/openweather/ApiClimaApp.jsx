@@ -4,7 +4,6 @@ import { CityForm } from '../../../componentes';
 import { getCityData, listenToUserData } from "../../../../store/historial/thunks";
 import { ClimaCard } from "./ClimaCard";
 import PropTypes from "prop-types";
-import { Box, Alert } from '@mui/material';
 
 const capitalizeFirstLetter = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -33,10 +32,10 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
 
     setCargando(true);
     setError(null);
-  
+
     try {
       const cardData = await dispatch(getCityData(city));
-  
+
       if (cardData) {
         setDescripcionClima(capitalizeFirstLetter(cardData.climaData.weather?.[0]?.description || ''));
       } else {
@@ -54,23 +53,25 @@ export const ApiClimaApp = ({ setDescripcionClima }) => {
   };
 
   return (
-    <Box className="cuadro-main" display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-      <Box className="content-container">
+    <div className="api-clima-container">
+      <div className="api-clima-content">
         <CityForm onFormSubmit={envForm} loading={cargando} requestCount={requestCount} />
         {error && (
-          <Alert severity="error" sx={{ marginTop: 2 }}>
+          <div className="notification is-danger" style={{ marginTop: '1rem' }}>
             {error}
-          </Alert>
+          </div>
         )}
         {historialData && historialData.length > 0 && (
-          <Box mt={2} display="grid" gridTemplateColumns={{ xs: '1fr', sm: '1fr', md: 'repeat(2, 1fr)' }} gap={2}>
+          <div className="columns is-multiline" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
             {historialData.map((data, i) => (
-              <ClimaCard key={i} data={data} />
+              <div key={i} className="column is-12-mobile is-12-tablet is-6-desktop p-2">
+                <ClimaCard data={data} />
+              </div>
             ))}
-          </Box>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 
