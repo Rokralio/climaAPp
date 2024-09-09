@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '18.9.1'
 
       - name: Install dependencies
         run: yarn install
@@ -27,8 +27,8 @@ jobs:
       - name: Run build
         run: yarn build
 
-      - name: Deploy to GitHub Pages
-        run: yarn deploy
+      # - name: Deploy to GitHub Pages
+      #   run: yarn deploy
 
       - name: Clean up
         run: rm -rf node_modules
